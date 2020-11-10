@@ -75,7 +75,7 @@ public class Relay {
 		GridPoint pt = grid.getLocation(this);
 		Context<Object> context = ContextUtils.getContext(this);
 		
-		//The propagation of a wave is simulated by generating 9 perturbations
+		//The propagation of a wave is simulated by generating 8 perturbations
 		//and propagating them along the 9 directions/angles (0, 45, 90, 135...)
 		//Each perturbation has its own propagation speed in order to simulate the propagation delay
 		//I.e. each propagations travels and its own speed and it can reach the maximum range faster than others

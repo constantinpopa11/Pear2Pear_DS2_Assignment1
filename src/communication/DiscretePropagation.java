@@ -11,7 +11,7 @@ public class DiscretePropagation {
 	//Each propagation travels in a certain direction,
 	//given by its angle expressed in radiant
 	//Propagation is the mean used by the Perturbation to reach other Relays
-	//In other words, many discrete propagations are used to carry a perturbation along the 9 directions
+	//In other words, many discrete propagations are used to carry a perturbation along the 8 directions
 	public static final double[] PROPAGATION_ANGLES = {
         0,          //0 degrees   
 		0.7854,     //45 degrees
@@ -21,7 +21,6 @@ public class DiscretePropagation {
 		3.927,      //225
 		4.712,      //270
 		5.498,      //315
-		6.283       //360
 	};
 	
 	//When a perturbation has propagated for this maximum amount, it disappears from the medium
@@ -30,7 +29,7 @@ public class DiscretePropagation {
 	private Perturbation perturbation;
 	private ContinuousSpace<Object> space; //the space where relays are placed
 	private Grid<Object> grid; //an abstraction for the continuous space using a grid
-	private double propagationAngle; //one of the 9 possible angles a perturbation can travel
+	private double propagationAngle; //one of the 8 possible angles a perturbation can travel
 	private double propagationSpeed; //how many units a perturbation can advance during a time interval
 	//private NdPoint origin; //the initial position of the perturbation. I.E. the position of the sender 
 	private double traveledDistance; //the distance the perturbation has propagated along, expressed in units
