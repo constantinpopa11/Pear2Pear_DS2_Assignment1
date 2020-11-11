@@ -146,11 +146,12 @@ public class Relay {
 					changes = false;
 					for(Map.Entry<Integer, ArrayList<Perturbation>> entry : bag.entrySet()) {
 						for(Perturbation Q : entry.getValue()) {
-							changes = true;
-							forward(Q);
-							deliver(Q);
-							frontier.put(Q.getSource(), frontier.get(Q.getSource()) + 1);
-							removeFromBag(Q);
+							if(frontier.get(Q.getSource()) == Q.getReference())
+								changes = true;
+								forward(Q);
+								deliver(Q);
+								frontier.put(Q.getSource(), frontier.get(Q.getSource()) + 1);
+								removeFromBag(Q);
 						}
 					}
 				}
