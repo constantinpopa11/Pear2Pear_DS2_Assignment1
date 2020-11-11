@@ -10,9 +10,11 @@ import communication.Perturbation;
 import communication.UnicastMessage;
 import communication.Perturbation.Type;
 import repast.simphony.context.Context;
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.engine.watcher.Watch;
 import repast.simphony.engine.watcher.WatcherTriggerSchedule;
+import repast.simphony.parameter.Parameters;
 import repast.simphony.query.space.grid.GridCell;
 import repast.simphony.query.space.grid.GridCellNgh;
 import repast.simphony.random.RandomHelper;
@@ -32,6 +34,10 @@ public class Relay {
 	private int id; //Globally unique id of the relay
 	private int perturbationCounter = 0; //Incrementally growing id for the emitted perturbations
 
+	//Used to probability of perturbation count parameter
+	Parameters params = RunEnvironment.getInstance().getParameters();
+	private double probabilityOfPerturbation = params.getDouble("probabilityOfPerturbation");
+	
 	public Relay(ContinuousSpace<Object> space, Grid<Object> grid, int id) {
 		this.buffer = new HashMap<>();
 		this.space = space;
@@ -41,9 +47,9 @@ public class Relay {
 
 	@ScheduledMethod(start=1, interval=1) 
 	public void step() {
-		int probability = RandomHelper.nextIntFromTo (0, 99);
+		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
 		//TODO add threshold parameter
-		if(probability >= 95) { //propagate a perturbation
+		if(coinToss <= probabilityOfPerturbation) { //propagate a perturbation
 			forward(new Perturbation(this.id, this.perturbationCounter++, Type.VALUE_BROADCAST, new String("ciao")));
 
 			//code that might be recycled later

@@ -1,7 +1,9 @@
 package communication;
 
 import repast.simphony.context.Context;
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
+import repast.simphony.parameter.Parameters;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
@@ -23,8 +25,10 @@ public class DiscretePropagation {
 		5.498,      //315
 	};
 	
+	//Used to retrieve max_propagation_distance parameter
+	Parameters params = RunEnvironment.getInstance().getParameters();
 	//When a perturbation has propagated for this maximum amount, it disappears from the medium
-	public static final double MAX_PROPAGATION_DISTANCE = 5.0;
+	public double MAX_PROPAGATION_DISTANCE;
 	
 	private Perturbation perturbation;
 	private ContinuousSpace<Object> space; //the space where relays are placed
@@ -45,6 +49,7 @@ public class DiscretePropagation {
 		this.propagationSpeed = propagationSpeed;
 		this.traveledDistance = 0.0;
 		this.propagated = false;
+		this.MAX_PROPAGATION_DISTANCE = params.getDouble("MAX_PROPAGATION_DISTANCE");
 	}
 	
 	@ScheduledMethod(start=1, interval=1) 

@@ -7,6 +7,8 @@ import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
 import repast.simphony.context.space.grid.GridFactory;
 import repast.simphony.context.space.grid.GridFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
+import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.parameter.Parameters;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.continuous.RandomCartesianAdder;
@@ -21,6 +23,9 @@ public class DemoBuilder implements ContextBuilder<Object> {
 	public Context build(Context<Object> context) {
 		context.setId("Pear2Pear_DS2_Assignment1");
 
+		//Used to retrieve relay count parameter
+		Parameters params = RunEnvironment.getInstance().getParameters();
+		
 		ContinuousSpaceFactory spaceFactory =
 				ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		ContinuousSpace<Object> space =
@@ -40,7 +45,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
 						)
 				);
 		
-		int relayCount = 100;
+		int relayCount = params.getInteger("relayCount");
 		for (int i = 0; i < relayCount ; i ++) {
 			context.add (new Relay(space , grid, i));
 		}
