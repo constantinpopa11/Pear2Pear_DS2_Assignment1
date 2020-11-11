@@ -28,21 +28,26 @@ import repast.simphony.util.SimUtilities;
 
 public class Relay {
 
-	private Map<Integer, ArrayList<Perturbation>> buffer; //Out-of-order perturbations go here, waiting to be delivered later
+	private Map<Integer, ArrayList<Perturbation>> bag; //Out-of-order perturbations go here, waiting to be delivered later
+	private Map<Integer, ArrayList<Perturbation>> log; //append-only log
 	private ContinuousSpace<Object> space; //the space where relays are placed
 	private Grid<Object> grid; //an abstraction for the continuous space using a grid
 	private int id; //Globally unique id of the relay
 	private int perturbationCounter = 0; //Incrementally growing id for the emitted perturbations
-
+	private Map<Integer, Integer> frontier; //reference of the last delivered perturbation per peer
+	
 	//Used to probability of perturbation count parameter
 	Parameters params = RunEnvironment.getInstance().getParameters();
 	private double probabilityOfPerturbation = params.getDouble("probabilityOfPerturbation");
 	
 	public Relay(ContinuousSpace<Object> space, Grid<Object> grid, int id) {
-		this.buffer = new HashMap<>();
+		this.log = new HashMap<>();
+		this.bag = new HashMap<>();
+		this.frontier = new HashMap<>();
 		this.space = space;
 		this.grid = grid;
 		this.id = id;
+		
 	}
 
 	@ScheduledMethod(start=1, interval=1) 
@@ -120,7 +125,7 @@ public class Relay {
 		GridPoint pt = grid.getLocation(this);
 		
 		//collect all the perturbations in this cell
-		List<Object> perturbations = new ArrayList<Object>();
+		List<Perturbation> perturbations = new ArrayList<Perturbation>();
 		for(Object obj : grid.getObjectsAt(pt.getX(), pt.getY())) {
 			if(obj instanceof DiscretePropagation) {
 				DiscretePropagation propagation = (DiscretePropagation) obj;
@@ -128,19 +133,60 @@ public class Relay {
 			}
 		}
 		
-		if(perturbations.size()> 0) {
-			//TODO: filter out duplicates and forward when needed
-			//basically implement Relay_I and Relay_II pseudocode
-			//int index = RandomHelper.nextIntFromTo(0, perturbations.size() - 1);
-			//Object obj = perturbations.get(index);
-			for(Object obj : perturbations) {
-				//TODO: check type of perturbation, payload etc
-				//TODO: is perturbation an ARQ?
-				//TODO: forward perturbation
-				//TODO: deliver old perturbations from the buffer if possible
-				System.out.println("Sensed " + obj.toString());
+		//sense perturbations
+		for(Perturbation p : perturbations) {
+			
+			//add to bag if you find a new perturbation
+			if(p.getReference() >= frontier.get(p.getSource()) && !isInBag(p)) {
+				addToBag(p);
+				
+				//go through the bag until you do not make any new change
+				boolean changes = true;
+				while(changes) {
+					changes = false;
+					for(Map.Entry<Integer, ArrayList<Perturbation>> entry : bag.entrySet()) {
+						for(Perturbation Q : entry.getValue()) {
+							changes = true;
+							forward(Q);
+							deliver(Q);
+							frontier.put(Q.getSource(), frontier.get(Q.getSource()) + 1);
+							removeFromBag(Q);
+						}
+					}
+				}
 			}
 		}
+	}
+	
+	//check if the perturbation is present in the bag
+	private boolean isInBag(Perturbation p) {
+		boolean result = false;
+		if(bag.containsKey(p.getSource())) {
+			result = bag.get(p.getSource()).contains(p);
+		}
+		return result;
+	}
+	
+	//add a new perturbation to bag
+	private void addToBag(Perturbation p) {
+		if(!bag.containsKey(p.getSource())) {
+			bag.put(p.getSource(), new ArrayList<Perturbation>());
+		}
+		bag.get(p.getSource()).add(p);
+	}
+	
+	//remove perturbation from bag
+	private void removeFromBag(Perturbation p) {
+		bag.get(p.getSource()).remove(p);
+	}
+	
+	//deliver a perturbation
+	private void deliver(Perturbation p) {
+		//TODO: check type of perturbation, payload etc
+		//TODO: is perturbation an ARQ?
+		//TODO: forward perturbation
+		//TODO: deliver old perturbations from the buffer if possible
+		System.out.println("Sensed " + p.toString());
 	}
 	
 	//TODO: implement group_send, private_send, publish methods
