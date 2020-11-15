@@ -246,3 +246,843 @@ Caused by: java.lang.NullPointerException
 	at repast.simphony.scenario.ScenarioWatcheeInitializer.run(ScenarioWatcheeInitializer.java:34)
 	at repast.simphony.scenario.ScenarioLoader.load(ScenarioLoader.java:120)
 	... 21 more
+ERROR [Thread-2] 2020-11-15 18:15:04,847 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.lang.NullPointerException
+	at agents.Relay.sense(Relay.java:144)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 18:15:04,847 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (4.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.lang.NullPointerException
+	at agents.Relay.sense(Relay.java:144)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 18:34:45,620 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.lang.NullPointerException
+	at agents.Relay.sense(Relay.java:173)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 18:34:45,639 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (5.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.lang.NullPointerException
+	at agents.Relay.sense(Relay.java:173)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 18:41:32,144 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.lang.NullPointerException
+	at agents.Relay.sense(Relay.java:166)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 18:41:32,148 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (2.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.lang.NullPointerException
+	at agents.Relay.sense(Relay.java:166)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 18:49:35,936 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.ArrayList$Itr.checkForComodification(ArrayList.java:1043)
+	at java.base/java.util.ArrayList$Itr.next(ArrayList.java:997)
+	at agents.Relay.sense(Relay.java:161)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 18:49:35,942 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (6.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.ArrayList$Itr.checkForComodification(ArrayList.java:1043)
+	at java.base/java.util.ArrayList$Itr.next(ArrayList.java:997)
+	at agents.Relay.sense(Relay.java:161)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 18:53:09,631 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.ArrayList$Itr.checkForComodification(ArrayList.java:1043)
+	at java.base/java.util.ArrayList$Itr.next(ArrayList.java:997)
+	at agents.Relay.sense(Relay.java:161)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 18:53:09,631 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (2.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.ArrayList$Itr.checkForComodification(ArrayList.java:1043)
+	at java.base/java.util.ArrayList$Itr.next(ArrayList.java:997)
+	at agents.Relay.sense(Relay.java:161)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 18:58:41,946 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.ArrayList$Itr.checkForComodification(ArrayList.java:1043)
+	at java.base/java.util.ArrayList$Itr.next(ArrayList.java:997)
+	at agents.Relay.sense(Relay.java:161)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 18:58:41,962 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (2.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.ArrayList$Itr.checkForComodification(ArrayList.java:1043)
+	at java.base/java.util.ArrayList$Itr.next(ArrayList.java:997)
+	at agents.Relay.sense(Relay.java:161)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 19:06:02,795 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1493)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1516)
+	at repast.simphony.util.collections.FilteredIterator.cache(FilteredIterator.java:141)
+	at repast.simphony.util.collections.FilteredIterator.hasNext(FilteredIterator.java:166)
+	at org.apache.commons.collections15.iterators.IteratorChain.updateCurrentIterator(IteratorChain.java:239)
+	at org.apache.commons.collections15.iterators.IteratorChain.hasNext(IteratorChain.java:253)
+	at agents.Relay.sense(Relay.java:145)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 19:06:02,795 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (2.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1493)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1516)
+	at repast.simphony.util.collections.FilteredIterator.cache(FilteredIterator.java:141)
+	at repast.simphony.util.collections.FilteredIterator.hasNext(FilteredIterator.java:166)
+	at org.apache.commons.collections15.iterators.IteratorChain.updateCurrentIterator(IteratorChain.java:239)
+	at org.apache.commons.collections15.iterators.IteratorChain.hasNext(IteratorChain.java:253)
+	at agents.Relay.sense(Relay.java:145)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 19:12:46,198 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1493)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1516)
+	at repast.simphony.util.collections.FilteredIterator.cache(FilteredIterator.java:141)
+	at repast.simphony.util.collections.FilteredIterator.hasNext(FilteredIterator.java:166)
+	at org.apache.commons.collections15.iterators.IteratorChain.updateCurrentIterator(IteratorChain.java:239)
+	at org.apache.commons.collections15.iterators.IteratorChain.hasNext(IteratorChain.java:253)
+	at agents.Relay.sense(Relay.java:146)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 19:12:46,204 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (2.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1493)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1516)
+	at repast.simphony.util.collections.FilteredIterator.cache(FilteredIterator.java:141)
+	at repast.simphony.util.collections.FilteredIterator.hasNext(FilteredIterator.java:166)
+	at org.apache.commons.collections15.iterators.IteratorChain.updateCurrentIterator(IteratorChain.java:239)
+	at org.apache.commons.collections15.iterators.IteratorChain.hasNext(IteratorChain.java:253)
+	at agents.Relay.sense(Relay.java:146)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 19:26:03,944 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1493)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1516)
+	at repast.simphony.util.collections.FilteredIterator.cache(FilteredIterator.java:141)
+	at repast.simphony.util.collections.FilteredIterator.hasNext(FilteredIterator.java:166)
+	at org.apache.commons.collections15.iterators.IteratorChain.updateCurrentIterator(IteratorChain.java:239)
+	at org.apache.commons.collections15.iterators.IteratorChain.hasNext(IteratorChain.java:253)
+	at agents.Relay.sense(Relay.java:147)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 19:26:03,950 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (5.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1493)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1516)
+	at repast.simphony.util.collections.FilteredIterator.cache(FilteredIterator.java:141)
+	at repast.simphony.util.collections.FilteredIterator.hasNext(FilteredIterator.java:166)
+	at org.apache.commons.collections15.iterators.IteratorChain.updateCurrentIterator(IteratorChain.java:239)
+	at org.apache.commons.collections15.iterators.IteratorChain.hasNext(IteratorChain.java:253)
+	at agents.Relay.sense(Relay.java:147)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 19:35:35,436 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1493)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1516)
+	at repast.simphony.util.collections.FilteredIterator.cache(FilteredIterator.java:141)
+	at repast.simphony.util.collections.FilteredIterator.hasNext(FilteredIterator.java:166)
+	at org.apache.commons.collections15.iterators.IteratorChain.updateCurrentIterator(IteratorChain.java:239)
+	at org.apache.commons.collections15.iterators.IteratorChain.hasNext(IteratorChain.java:253)
+	at agents.Relay.sense(Relay.java:147)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 19:35:35,436 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (3.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1493)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1516)
+	at repast.simphony.util.collections.FilteredIterator.cache(FilteredIterator.java:141)
+	at repast.simphony.util.collections.FilteredIterator.hasNext(FilteredIterator.java:166)
+	at org.apache.commons.collections15.iterators.IteratorChain.updateCurrentIterator(IteratorChain.java:239)
+	at org.apache.commons.collections15.iterators.IteratorChain.hasNext(IteratorChain.java:253)
+	at agents.Relay.sense(Relay.java:147)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 19:40:02,928 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:81)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1493)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1516)
+	at repast.simphony.util.collections.FilteredIterator.cache(FilteredIterator.java:141)
+	at repast.simphony.util.collections.FilteredIterator.hasNext(FilteredIterator.java:166)
+	at org.apache.commons.collections15.iterators.IteratorChain.updateCurrentIterator(IteratorChain.java:239)
+	at org.apache.commons.collections15.iterators.IteratorChain.hasNext(IteratorChain.java:253)
+	at agents.Relay.sense(Relay.java:147)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 19:40:02,944 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (7.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:81)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.HashMap$HashIterator.nextNode(HashMap.java:1493)
+	at java.base/java.util.HashMap$KeyIterator.next(HashMap.java:1516)
+	at repast.simphony.util.collections.FilteredIterator.cache(FilteredIterator.java:141)
+	at repast.simphony.util.collections.FilteredIterator.hasNext(FilteredIterator.java:166)
+	at org.apache.commons.collections15.iterators.IteratorChain.updateCurrentIterator(IteratorChain.java:239)
+	at org.apache.commons.collections15.iterators.IteratorChain.hasNext(IteratorChain.java:253)
+	at agents.Relay.sense(Relay.java:147)
+	... 19 more
+FATAL [Thread-2] 2020-11-15 20:06:48,019 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (8.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.lang.ClassCastException: class agents.Relay cannot be cast to class communication.DiscretePropagation (agents.Relay and communication.DiscretePropagation are in unnamed module of loader repast.simphony.plugin.ExtendablePluginClassLoader @6428591a)
+	at java.base/java.util.Iterator.forEachRemaining(Iterator.java:133)
+	at agents.Relay.sense(Relay.java:148)
+	... 19 more
+ERROR [Thread-2] 2020-11-15 20:16:40,916 repast.simphony.engine.watcher.Notifier2 - Error while initializing watcher triggerScheduler
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2$SetupTrigger.scheduleExecution(Notifier2.java:56)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 17 more
+Caused by: java.lang.ClassCastException: class agents.Relay cannot be cast to class communication.DiscretePropagation (agents.Relay and communication.DiscretePropagation are in unnamed module of loader repast.simphony.plugin.ExtendablePluginClassLoader @6428591a)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at agents.Relay.sense(Relay.java:148)
+	... 20 more
+FATAL [Thread-2] 2020-11-15 20:16:40,921 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.watcher.ArgMatcher$PlainTrigger.execute(ArgMatcher.java:148)
+	at repast.simphony.engine.watcher.ImmediateExecutor.scheduleExecution(ImmediateExecutor.java:31)
+	at repast.simphony.engine.watcher.Notifier2.triggered(Notifier2.java:150)
+	at repast.simphony.engine.watcher.WatcherTrigger.notify(WatcherTrigger.java:116)
+	at repast.simphony.engine.watcher.WatcherTrigger.triggered(WatcherTrigger.java:146)
+	at communication.DiscretePropagation.step(DiscretePropagation.java:80)
+	... 10 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 16 more
+Caused by: java.lang.ClassCastException: class agents.Relay cannot be cast to class communication.DiscretePropagation (agents.Relay and communication.DiscretePropagation are in unnamed module of loader repast.simphony.plugin.ExtendablePluginClassLoader @6428591a)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at agents.Relay.sense(Relay.java:148)
+	... 19 more

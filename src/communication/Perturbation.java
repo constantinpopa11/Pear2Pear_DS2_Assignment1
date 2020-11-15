@@ -38,6 +38,10 @@ public class Perturbation {
 		this.payload = payload;
 	}
 	
+	public Perturbation clone() {
+		return new Perturbation(this.source, this.reference, this.type, this.payload);
+	}
+	
 	public int getSource() {
 		return source;
 	}
@@ -62,4 +66,5 @@ public class Perturbation {
 	public void setType(Type type) {
 		this.type = type;
 	}
+	
 }

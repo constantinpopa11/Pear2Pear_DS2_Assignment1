@@ -1,9 +1,14 @@
 package agents;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.sound.midi.SysexMessage;
 
 import communication.DiscretePropagation;
 import communication.Perturbation;
@@ -15,6 +20,7 @@ import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.engine.watcher.Watch;
 import repast.simphony.engine.watcher.WatcherTriggerSchedule;
 import repast.simphony.parameter.Parameters;
+import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.query.space.grid.GridCell;
 import repast.simphony.query.space.grid.GridCellNgh;
 import repast.simphony.random.RandomHelper;
@@ -34,7 +40,7 @@ public class Relay {
 	private Grid<Object> grid; //an abstraction for the continuous space using a grid
 	private int id; //Globally unique id of the relay
 	private int perturbationCounter = 0; //Incrementally growing id for the emitted perturbations
-	private Map<Integer, Integer> frontier; //reference of the last delivered perturbation per peer
+	private Map<Integer, Integer> frontier; //reference of next perturbation per peer to be delivered
 	
 	//Used to probability of perturbation count parameter
 	Parameters params = RunEnvironment.getInstance().getParameters();
@@ -55,6 +61,8 @@ public class Relay {
 		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
 		//TODO add threshold parameter
 		if(coinToss <= probabilityOfPerturbation) { //propagate a perturbation
+			System.out.println("Relay(" + id + "): generating perturbation"
+					+ "<" + id + ", " + this.perturbationCounter + ", " + new String("ciao") + ">");
 			forward(new Perturbation(this.id, this.perturbationCounter++, Type.VALUE_BROADCAST, new String("ciao")));
 
 			//code that might be recycled later
@@ -80,19 +88,23 @@ public class Relay {
 		}
 	}
 	
-	private void forward(Perturbation perturbation) {
+	private void forward(Perturbation p) {
+		System.out.println("Relay(" + id + "): forwarding perturbation"
+				+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
+		
 		// get the grid location of this Relay
 		NdPoint spacePt = space.getLocation(this);
 		GridPoint pt = grid.getLocation(this);
 		Context<Object> context = ContextUtils.getContext(this);
 		
-		//The propagation of a wave is simulated by generating 8 perturbations
+		//The propagation of a perturbation/wave is simulated by generating 8 perturbation clones
 		//and propagating them along the 9 directions/angles (0, 45, 90, 135...)
-		//Each perturbation has its own propagation speed in order to simulate the propagation delay
-		//I.e. each propagations travels and its own speed and it can reach the maximum range faster than others
+		//Each perturbation clone has its own propagation speed in order to simulate the propagation delay
+		//I.e. each propagation clone travels and its own speed and it can reach the maximum range faster than others
+		//The clone is called Discrete Propagation and it's a "piece" of a Perturbation
 		for(int i=0; i<DiscretePropagation.PROPAGATION_ANGLES.length; i++) {
 			DiscretePropagation propagation = new DiscretePropagation(
-					perturbation,
+					p,
 					space, grid,
 					DiscretePropagation.PROPAGATION_ANGLES[i], 
 					RandomHelper.nextDoubleFromTo(0.3, 0.7)); //TODO: add as parameter
@@ -112,52 +124,77 @@ public class Relay {
 		//TODO: implement
 	}
 
-	@Watch(watcheeClassName = "communication.DiscretePropagation",
-			watcheeFieldNames = "propagated",
-			query = "colocated",
-			whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
 	//When a perturbation propagates, relays get notified so they check 
 	//if the perturbations is in their "range" (broadcast domain)
 	//A perturbation is going to be sensed when it is found in the same cell of the relay
-	private void sense() {
+	@Watch(watcheeClassName = "communication.DiscretePropagation",
+			watcheeFieldNames = "propagated",
+			query = "within 10",
+			whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
+	public void sense() {
+		Context<Object> context = ContextUtils.getContext(this);
+		List<Perturbation> perturbations = new ArrayList<Perturbation>();
+		
 		
 		//pick up the perturbations in the same cell as the relay
 		GridPoint pt = grid.getLocation(this);
 		
+		//old way to find nearby perturbations
 		//collect all the perturbations in this cell
-		List<Perturbation> perturbations = new ArrayList<Perturbation>();
-		for(Object obj : grid.getObjectsAt(pt.getX(), pt.getY())) {
+//		for(Object obj : grid.getObjectsAt(pt.getX(), pt.getY())) {
+//			if(obj instanceof DiscretePropagation) {
+//				DiscretePropagation propagation = (DiscretePropagation) obj;
+//				perturbations.add(propagation.getPerturbation());
+//			}
+//		}
+		
+		ContinuousWithin<Object> nearbyQuery = new ContinuousWithin(context, this, 3.0);
+		CopyOnWriteArrayList<Object> nearbyObjects = new CopyOnWriteArrayList<>();
+		nearbyQuery.query().forEach(nearbyObjects::add);
+
+
+		for(Object obj : nearbyObjects) {
 			if(obj instanceof DiscretePropagation) {
 				DiscretePropagation propagation = (DiscretePropagation) obj;
-				perturbations.add(propagation.getPerturbation());
-			}
-		}
-		
-		//sense perturbations
-		for(Perturbation p : perturbations) {
-			
-			//add to bag if you find a new perturbation
-			if(p.getReference() >= frontier.get(p.getSource()) && !isInBag(p)) {
-				addToBag(p);
+				Perturbation p = propagation.getPerturbation();
 				
-				//go through the bag until you do not make any new change
-				boolean changes = true;
-				while(changes) {
-					changes = false;
-					for(Map.Entry<Integer, ArrayList<Perturbation>> entry : bag.entrySet()) {
-						for(Perturbation Q : entry.getValue()) {
-							if(frontier.get(Q.getSource()) == Q.getReference())
+				//add to bag if you find a new perturbation
+				if((frontier.get(p.getSource()) == null
+						|| p.getReference() >= frontier.get(p.getSource())) 
+						&& !isInBag(p) && p.getSource() != id) {//don't sense self-generated perturbations
+					
+					addToBag(p);
+					
+					System.out.println("Relay(" + id + "): sensed perturbation"
+							+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
+					
+					//go through the bag until you do not make any new change
+					boolean changes = true;
+					while(changes) {
+						changes = false;
+						
+						Iterator<Perturbation> deferredPerturbations = bag.get(p.getSource()).iterator();
+						
+						while (deferredPerturbations.hasNext()) {
+						    Perturbation Q = deferredPerturbations.next();
+						    Integer nextRef = frontier.get(Q.getSource());
+							if(nextRef == null) 
+								nextRef = Q.getReference(); //TODO:this might not be permanent
+							if(nextRef == Q.getReference())
 								changes = true;
 								forward(Q);
 								deliver(Q);
-								frontier.put(Q.getSource(), frontier.get(Q.getSource()) + 1);
-								removeFromBag(Q);
+								frontier.put(Q.getSource(), nextRef + 1);
+								//TODO: update thread safe method  removeFromBag then uncomment
+								//removeFromBag(Q);
+								deferredPerturbations.remove(); //temporary workaround
 						}
 					}
 				}
 			}
 		}
 	}
+		
 	
 	//check if the perturbation is present in the bag
 	private boolean isInBag(Perturbation p) {
@@ -173,7 +210,7 @@ public class Relay {
 		if(!bag.containsKey(p.getSource())) {
 			bag.put(p.getSource(), new ArrayList<Perturbation>());
 		}
-		bag.get(p.getSource()).add(p);
+		bag.get(p.getSource()).add(p.clone());
 	}
 	
 	//remove perturbation from bag
@@ -187,7 +224,9 @@ public class Relay {
 		//TODO: is perturbation an ARQ?
 		//TODO: forward perturbation
 		//TODO: deliver old perturbations from the buffer if possible
-		System.out.println("Sensed " + p.toString());
+		System.out.println("Relay(" + id + "): delivering perturbation"
+				+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
+		
 	}
 	
 	//TODO: implement group_send, private_send, publish methods

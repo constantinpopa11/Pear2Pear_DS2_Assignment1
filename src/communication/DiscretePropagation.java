@@ -37,7 +37,7 @@ public class DiscretePropagation {
 	private double propagationSpeed; //how many units a perturbation can advance during a time interval
 	//private NdPoint origin; //the initial position of the perturbation. I.E. the position of the sender 
 	private double traveledDistance; //the distance the perturbation has propagated along, expressed in units
-	private boolean propagated; //used for notifying the relays which sense the medium for incoming perturbations
+	public boolean propagated; //used for notifying the relays which sense the medium for incoming perturbations
 	
 	public DiscretePropagation(Perturbation perturbation, ContinuousSpace<Object> space, Grid<Object> grid,
 			double propagationAngle, double propagationSpeed) {
@@ -77,8 +77,7 @@ public class DiscretePropagation {
 			spacePt = space.getLocation(this);
 			grid.moveTo(this,(int)spacePt.getX(),(int)spacePt.getY());
 			traveledDistance += propagationSpeed;
-			this.propagated = true;
-					
+			propagated = true;
 		} else {
 			Context<Object> context = ContextUtils.getContext(this);
 			context.remove(this);
