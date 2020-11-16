@@ -227,6 +227,15 @@ public class Relay {
 		System.out.println("Relay(" + id + "): delivering perturbation"
 				+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
 		
+		//If not present, add the new source in log
+		if(!log.containsKey(p.getSource()))
+			log.put(p.getSource(), new ArrayList<Perturbation>());
+		
+		//Add the perturbation to the associated source's list
+		log.get(p.getSource()).add(p);
+		
+			
+		
 	}
 	
 	//TODO: implement group_send, private_send, publish methods
@@ -238,6 +247,18 @@ public class Relay {
 		forward(new Perturbation(this.id, perturbationCounter, Type.MULTICAST_MESSAGE, value));
 	}
 	
+	@Override
+	public String toString() {
+		String result = "";
+		result += "Relay: " + this.id + " --- ";
+		for(Map.Entry<Integer, ArrayList<Perturbation>> logLine : log.entrySet()) {
+			result += " Source(" + logLine.getKey() + ") -> ";
+			for(Perturbation p : logLine.getValue()) {
+				result += " | <" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload() +"> ";
+			}
+		}
+		return result;
+	}
 	
 }
 
