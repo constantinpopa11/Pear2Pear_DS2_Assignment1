@@ -3,9 +3,11 @@ package agents;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.sound.midi.SysexMessage;
@@ -34,13 +36,14 @@ import repast.simphony.util.SimUtilities;
 
 public class Relay {
 
-	private Map<Integer, ArrayList<Perturbation>> bag; //Out-of-order perturbations go here, waiting to be delivered later
+	//Relay__II private Map<Integer, ArrayList<Perturbation>> bag; //Out-of-order perturbations go here, waiting to be delivered later
 	private Map<Integer, ArrayList<Perturbation>> log; //append-only log
 	private ContinuousSpace<Object> space; //the space where relays are placed
 	private Grid<Object> grid; //an abstraction for the continuous space using a grid
 	private int id; //Globally unique id of the relay
 	private int perturbationCounter = 0; //Incrementally growing id for the emitted perturbations
 	private Map<Integer, Integer> frontier; //reference of next perturbation per peer to be delivered
+	private HashSet<String> seenARQs;
 	
 	//Used to probability of perturbation count parameter
 	Parameters params = RunEnvironment.getInstance().getParameters();
@@ -48,8 +51,9 @@ public class Relay {
 	
 	public Relay(ContinuousSpace<Object> space, Grid<Object> grid, int id) {
 		this.log = new HashMap<>();
-		this.bag = new HashMap<>();
+		//Relay__II this.bag = new HashMap<>();
 		this.frontier = new HashMap<>();
+		this.seenARQs = new HashSet<>();
 		this.space = space;
 		this.grid = grid;
 		this.id = id;
@@ -122,6 +126,18 @@ public class Relay {
 	@ScheduledMethod(start=1, interval=3) //TODO: decide interval
 	public void automaticRetransmissionMechanism() {
 		//TODO: implement
+		for(Map.Entry<Integer, ArrayList<Perturbation>> perSourceLog : log.entrySet()) {
+			List <Perturbation> perturbations = perSourceLog.getValue();
+			Perturbation latestPerturbation = perturbations.get(perturbations.size() - 1);
+			System.out.println("Relay(" + id + "): broadcasting ARQ for perturbation " 
+					+ "<src=" + latestPerturbation.getSource() + ", "
+					+ "ref=" + (latestPerturbation.getReference()+1) + ">");
+			final String uuid = UUID.randomUUID().toString();
+			seenARQs.add(uuid);
+			forward(new Perturbation(latestPerturbation.getSource(), 
+					latestPerturbation.getReference() + 1, Type.ARQ, uuid)); //TODO:what should payload value be?
+		}
+		
 	}
 
 	//When a perturbation propagates, relays get notified so they check 
@@ -129,7 +145,7 @@ public class Relay {
 	//A perturbation is going to be sensed when it is found in the same cell of the relay
 	@Watch(watcheeClassName = "communication.DiscretePropagation",
 			watcheeFieldNames = "propagated",
-			query = "within 10",
+			query = "within 2",
 			whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
 	public void sense() {
 		Context<Object> context = ContextUtils.getContext(this);
@@ -148,75 +164,100 @@ public class Relay {
 //			}
 //		}
 		
-		ContinuousWithin<Object> nearbyQuery = new ContinuousWithin(context, this, 3.0);
+		ContinuousWithin<Object> nearbyQuery = new ContinuousWithin(context, this, 2.0);
 		CopyOnWriteArrayList<Object> nearbyObjects = new CopyOnWriteArrayList<>();
 		nearbyQuery.query().forEach(nearbyObjects::add);
-
 
 		for(Object obj : nearbyObjects) {
 			if(obj instanceof DiscretePropagation) {
 				DiscretePropagation propagation = (DiscretePropagation) obj;
 				Perturbation p = propagation.getPerturbation();
-				
-				//add to bag if you find a new perturbation
-				if((frontier.get(p.getSource()) == null
+
+				if(p.getType() == Type.ARQ) {
+					int src = p.getSource();
+					int ref = p.getReference();
+					if(!seenARQs.contains((String)p.getPayload())) {
+						System.out.println("Relay(" + id + "): sensed retransimission request for P="
+								+ "<src=" + src + ", ref=" + ref +">");
+						seenARQs.add((String)p.getPayload());
+						if(log.get(src) != null) {
+							for(Perturbation Q : log.get(src)) 
+								if(Q.getReference() == ref)
+									forward(Q);
+						}
+					}
+
+				} else if((frontier.get(p.getSource()) == null
 						|| p.getReference() >= frontier.get(p.getSource())) 
-						&& !isInBag(p) && p.getSource() != id) {//don't sense self-generated perturbations
+						&& p.getSource() != id && p.getType() != Type.ARQ){ 
+						//Relay__II&& !isInBag(p)) {//don't sense self-generated perturbations
 					
-					addToBag(p);
+					//Relay__II addToBag(p);
 					
 					System.out.println("Relay(" + id + "): sensed perturbation"
 							+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
 					
-					//go through the bag until you do not make any new change
-					boolean changes = true;
-					while(changes) {
-						changes = false;
-						
-						Iterator<Perturbation> deferredPerturbations = bag.get(p.getSource()).iterator();
-						
-						while (deferredPerturbations.hasNext()) {
-						    Perturbation Q = deferredPerturbations.next();
-						    Integer nextRef = frontier.get(Q.getSource());
-							if(nextRef == null) 
-								nextRef = Q.getReference(); //TODO:this might not be permanent
-							if(nextRef == Q.getReference())
-								changes = true;
-								forward(Q);
-								deliver(Q);
-								frontier.put(Q.getSource(), nextRef + 1);
-								//TODO: update thread safe method  removeFromBag then uncomment
-								//removeFromBag(Q);
-								deferredPerturbations.remove(); //temporary workaround
-						}
+					Integer nextRef = frontier.get(p.getSource());
+					if(nextRef == null) 
+						nextRef = p.getReference(); //TODO:this might not be permanent
+					if(nextRef == p.getReference()) {
+						forward(p);
+						deliver(p);
+						frontier.put(p.getSource(), nextRef + 1);
 					}
+						
+					//Relay__II(the entire loop)
+					//go through the bag until you do not make any new change
+//							boolean changes = true;
+//							while(changes) {
+//								changes = false;
+						//Relay__II Iterator<Perturbation> deferredPerturbations = bag.get(p.getSource()).iterator();
+//								while (deferredPerturbations.hasNext()) {
+//								    Perturbation Q = deferredPerturbations.next();
+//								    Integer nextRef = frontier.get(Q.getSource());
+//									if(nextRef == null) 
+//										nextRef = Q.getReference(); //TODO:this might not be permanent
+//									if(nextRef == Q.getReference())
+//										changes = true;
+//										forward(Q);
+//										deliver(Q);
+//										frontier.put(Q.getSource(), nextRef + 1);
+//										//TODO: update thread safe method  removeFromBag then uncomment
+//										//removeFromBag(Q);
+//										deferredPerturbations.remove(); //temporary workaround
+//								}
+//							}
 				}
+				
 			}
 		}
 	}
 		
 	
 	//check if the perturbation is present in the bag
-	private boolean isInBag(Perturbation p) {
-		boolean result = false;
-		if(bag.containsKey(p.getSource())) {
-			result = bag.get(p.getSource()).contains(p);
-		}
-		return result;
-	}
+	//Relay__II
+//	private boolean isInBag(Perturbation p) {
+//		boolean result = false;
+//		if(bag.containsKey(p.getSource())) {
+//			result = bag.get(p.getSource()).contains(p);
+//		}
+//		return result;
+//	}
 	
 	//add a new perturbation to bag
-	private void addToBag(Perturbation p) {
-		if(!bag.containsKey(p.getSource())) {
-			bag.put(p.getSource(), new ArrayList<Perturbation>());
-		}
-		bag.get(p.getSource()).add(p.clone());
-	}
+	//Relay__II
+//	private void addToBag(Perturbation p) {
+//		if(!bag.containsKey(p.getSource())) {
+//			bag.put(p.getSource(), new ArrayList<Perturbation>());
+//		}
+//		bag.get(p.getSource()).add(p.clone());
+//	}
 	
 	//remove perturbation from bag
-	private void removeFromBag(Perturbation p) {
-		bag.get(p.getSource()).remove(p);
-	}
+	//Relay__II
+//	private void removeFromBag(Perturbation p) {
+//		bag.get(p.getSource()).remove(p);
+//	}
 	
 	//deliver a perturbation
 	private void deliver(Perturbation p) {
@@ -238,7 +279,7 @@ public class Relay {
 		
 	}
 	
-	//TODO: implement group_send, private_send, publish methods
+	//TODO: implement group_send, private_send, publish(?) methods
 	private void privateSend(int destination, Object value) {
 		forward(new Perturbation(this.id, perturbationCounter++, Type.UNICAST_MESSAGE, value));
 	}

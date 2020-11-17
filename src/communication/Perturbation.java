@@ -23,6 +23,7 @@ public class Perturbation {
 		MULTICAST_MESSAGE, //object encapsulating the group and/or the topic, plus the value
 		RETRANSMISSION_REQUEST, //request for the next expected perturbation
 		ENCRYPTED_UNICAST, //just like the previous unicast message, but encrypted
+		ARQ //Automatic Retransmission Request 
 	}
 	
 	private int source; //the id of the source relay
