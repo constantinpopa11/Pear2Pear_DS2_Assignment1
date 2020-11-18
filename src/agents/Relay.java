@@ -34,6 +34,8 @@ import repast.simphony.space.grid.GridPoint;
 import repast.simphony.util.ContextUtils;
 import repast.simphony.util.SimUtilities;
 import security.AsymmetricCryptography;
+import Utils.DataCollector;
+import Utils.Options;
 
 public class Relay {
 
@@ -47,9 +49,9 @@ public class Relay {
 	private HashSet<String> seenARQs;
 	private Map<Integer, List<String>> subscriptions;
 	
+	
 	//Used to probability of perturbation count parameter
-	Parameters params = RunEnvironment.getInstance().getParameters();
-	private double probabilityOfPerturbation = params.getDouble("probabilityOfPerturbation");
+	private double probabilityOfPerturbation = Options.PROBABILITY_OF_PERTURBATION;
 	
 	public Relay(ContinuousSpace<Object> space, Grid<Object> grid, int id) {
 		this.log = new HashMap<>();
@@ -82,8 +84,13 @@ public class Relay {
 		if(coinToss <= probabilityOfPerturbation) { //propagate a perturbation
 			System.out.println("Relay(" + id + "): generating perturbation"
 					+ "<" + id + ", " + this.clock + ", " + new String("ciao") + ">");
-			forward(new Perturbation(this.id, this.clock++, Type.VALUE_BROADCAST, new String("ciao")));
-
+			
+			Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.VALUE_BROADCAST, new String("ciao"));
+			forward(perturbation);
+			
+			if(this.id == Options.NODE_A_LATENCY)
+				DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount());
+			
 			//code that might be recycled later
 //			Network<Object> net = Network<Object>) context .
 //					getProjection(" infection network ");

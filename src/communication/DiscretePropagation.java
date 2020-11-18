@@ -9,6 +9,8 @@ import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.util.ContextUtils;
 
+import Utils.Options;
+
 public class DiscretePropagation {
 	//Each propagation travels in a certain direction,
 	//given by its angle expressed in radiant
@@ -24,9 +26,7 @@ public class DiscretePropagation {
 		4.712,      //270
 		5.498,      //315
 	};
-	
-	//Used to retrieve max_propagation_distance parameter
-	Parameters params = RunEnvironment.getInstance().getParameters();
+
 	//When a perturbation has propagated for this maximum amount, it disappears from the medium
 	public double MAX_PROPAGATION_DISTANCE;
 	
@@ -49,7 +49,7 @@ public class DiscretePropagation {
 		this.propagationSpeed = propagationSpeed;
 		this.traveledDistance = 0.0;
 		this.propagated = false;
-		this.MAX_PROPAGATION_DISTANCE = params.getDouble("MAX_PROPAGATION_DISTANCE");
+		this.MAX_PROPAGATION_DISTANCE = Options.MAX_PROPAGATION_DISTANCE;
 	}
 	
 	@ScheduledMethod(start=1, interval=1) 
