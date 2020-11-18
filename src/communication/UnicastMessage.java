@@ -1,6 +1,10 @@
 package communication;
 
-public class UnicastMessage {
+import java.io.Serializable;
+
+public class UnicastMessage implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	private int destination;
 	private Object value;
 	

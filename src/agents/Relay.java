@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.sound.midi.SysexMessage;
-
+import javax.crypto.SealedObject;
 import communication.DiscretePropagation;
+import communication.MulticastMessage;
 import communication.Perturbation;
 import communication.UnicastMessage;
 import communication.Perturbation.Type;
@@ -33,6 +33,7 @@ import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridPoint;
 import repast.simphony.util.ContextUtils;
 import repast.simphony.util.SimUtilities;
+import security.AsymmetricCryptography;
 
 public class Relay {
 
@@ -41,9 +42,10 @@ public class Relay {
 	private ContinuousSpace<Object> space; //the space where relays are placed
 	private Grid<Object> grid; //an abstraction for the continuous space using a grid
 	private int id; //Globally unique id of the relay
-	private int perturbationCounter = 0; //Incrementally growing id for the emitted perturbations
+	private int clock = 0; //Incrementally growing id for the emitted perturbations
 	private Map<Integer, Integer> frontier; //reference of next perturbation per peer to be delivered
 	private HashSet<String> seenARQs;
+	private Map<Integer, List<String>> subscriptions;
 	
 	//Used to probability of perturbation count parameter
 	Parameters params = RunEnvironment.getInstance().getParameters();
@@ -58,16 +60,29 @@ public class Relay {
 		this.grid = grid;
 		this.id = id;
 		
+		//random way to generate subscriptions
+		if(id % 7 == 0) {
+			subscriptions = new HashMap<>();
+			List<String> topics = new ArrayList<>();
+			topics.add("science");
+			topics.add("literature");
+			//this relay subscribes to group 0 for the topics science and literature
+			//subscriptions can have also no topics (empty topics list), in this case the node 
+			//will receive all the messages from the group, so no filtering will be made
+			subscriptions.put(0, topics);
+		}
+			
+		
 	}
 
-	@ScheduledMethod(start=1, interval=1) 
+	@ScheduledMethod(start=1, interval=1, priority=100) 
 	public void step() {
 		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
 		//TODO add threshold parameter
 		if(coinToss <= probabilityOfPerturbation) { //propagate a perturbation
 			System.out.println("Relay(" + id + "): generating perturbation"
-					+ "<" + id + ", " + this.perturbationCounter + ", " + new String("ciao") + ">");
-			forward(new Perturbation(this.id, this.perturbationCounter++, Type.VALUE_BROADCAST, new String("ciao")));
+					+ "<" + id + ", " + this.clock + ", " + new String("ciao") + ">");
+			forward(new Perturbation(this.id, this.clock++, Type.VALUE_BROADCAST, new String("ciao")));
 
 			//code that might be recycled later
 //			Network<Object> net = Network<Object>) context .
@@ -123,7 +138,7 @@ public class Relay {
 	
 	
 	//Automatic retransmission requests 
-	@ScheduledMethod(start=1, interval=3) //TODO: decide interval
+	@ScheduledMethod(start=1, interval=10, priority=50) //TODO: decide interval
 	public void automaticRetransmissionMechanism() {
 		//TODO: implement
 		for(Map.Entry<Integer, ArrayList<Perturbation>> perSourceLog : log.entrySet()) {
@@ -142,11 +157,12 @@ public class Relay {
 
 	//When a perturbation propagates, relays get notified so they check 
 	//if the perturbations is in their "range" (broadcast domain)
-	//A perturbation is going to be sensed when it is found in the same cell of the relay
-	@Watch(watcheeClassName = "communication.DiscretePropagation",
-			watcheeFieldNames = "propagated",
-			query = "within 2",
-			whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
+	//A perturbation is going to be sensed when it is in the range of the relay (within value)
+//	@Watch(watcheeClassName = "communication.DiscretePropagation",
+//			watcheeFieldNames = "propagated",
+//			query = "within 3",
+//			whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
+	@ScheduledMethod(start=1, interval=1, priority=1)
 	public void sense() {
 		Context<Object> context = ContextUtils.getContext(this);
 		List<Perturbation> perturbations = new ArrayList<Perturbation>();
@@ -164,6 +180,7 @@ public class Relay {
 //			}
 //		}
 		
+		//thread safe method to inspect the nearby propagations
 		ContinuousWithin<Object> nearbyQuery = new ContinuousWithin(context, this, 2.0);
 		CopyOnWriteArrayList<Object> nearbyObjects = new CopyOnWriteArrayList<>();
 		nearbyQuery.query().forEach(nearbyObjects::add);
@@ -189,7 +206,7 @@ public class Relay {
 
 				} else if((frontier.get(p.getSource()) == null
 						|| p.getReference() >= frontier.get(p.getSource())) 
-						&& p.getSource() != id && p.getType() != Type.ARQ){ 
+						&& p.getSource() != id && p.getType() != Type.ARQ) { 
 						//Relay__II&& !isInBag(p)) {//don't sense self-generated perturbations
 					
 					//Relay__II addToBag(p);
@@ -268,6 +285,34 @@ public class Relay {
 		System.out.println("Relay(" + id + "): delivering perturbation"
 				+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
 		
+		//Inspect the payload
+		if(p.getType() == Type.UNICAST_MESSAGE) {
+			UnicastMessage m = (UnicastMessage)p.getPayload();
+			if(m.getDestination() == this.id) {
+				System.out.println("Relay(" + id + "): Relay(" + p.getSource() + ") sent me a private message");
+			}
+		} else if(p.getType() == Type.VALUE_BROADCAST) {
+			//nothing
+		} else if(p.getType() == Type.MULTICAST_MESSAGE) {
+			MulticastMessage m = (MulticastMessage)p.getPayload();
+			if(subscriptions.get(m.getGroup()) != null) {
+				List<String> topics = subscriptions.get(m.getGroup());
+				if(topics == null || topics.contains(m.getTopic())) {
+					
+					System.out.println("Relay(" + id + "): received a new message "
+							+ "for the subscription in the group " + m.getGroup());
+				}
+			}
+		} else if(p.getType() == Type.ENCRYPTED_UNICAST) {
+			SealedObject encryptedMessage = (SealedObject)p.getPayload();
+			UnicastMessage decryptedMessage = AsymmetricCryptography.decryptPayload(
+					encryptedMessage, security.KeyManager.PRIVATE_KEYS[id]);
+			
+			if(decryptedMessage != null) {
+				System.out.println("Relay(" + id + "): Relay(" + p.getSource() + ") sent me an encrypted private message");
+			}
+		}
+		
 		//If not present, add the new source in log
 		if(!log.containsKey(p.getSource()))
 			log.put(p.getSource(), new ArrayList<Perturbation>());
@@ -281,11 +326,11 @@ public class Relay {
 	
 	//TODO: implement group_send, private_send, publish(?) methods
 	private void privateSend(int destination, Object value) {
-		forward(new Perturbation(this.id, perturbationCounter++, Type.UNICAST_MESSAGE, value));
+		forward(new Perturbation(this.id, clock++, Type.UNICAST_MESSAGE, value));
 	}
 	
 	private void groupSend(int groupId, int topic, Object value) {
-		forward(new Perturbation(this.id, perturbationCounter, Type.MULTICAST_MESSAGE, value));
+		forward(new Perturbation(this.id, clock, Type.MULTICAST_MESSAGE, value));
 	}
 	
 	@Override

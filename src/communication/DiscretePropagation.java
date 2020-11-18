@@ -60,7 +60,7 @@ public class DiscretePropagation {
 		NdPoint spacePt = space.getLocation(this);
 		//Before propagating, check if the propagation hasn't reached the boundaries of the space
 		//and its maximum propagation range, otherwise it should disappear from the display 
-		if(spacePt.getX() + propagationSpeed < 50.0
+		if(spacePt.getX() + propagationSpeed < 50.0 //TODO: parametrize these also
 			&& spacePt.getX() - propagationSpeed > 0.0
 			&& spacePt.getY() + propagationSpeed < 50.0
 			&& spacePt.getY() - propagationSpeed > 0.0

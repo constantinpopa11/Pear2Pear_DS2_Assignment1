@@ -2,7 +2,7 @@ package communication;
 
 public class MulticastMessage {
 	private int group;
-	private int topic;
+	private String topic;
 	private Object value;
 	
 	public int getGroup() {
@@ -11,10 +11,10 @@ public class MulticastMessage {
 	public void setGroup(int group) {
 		this.group = group;
 	}
-	public int getTopic() {
+	public String getTopic() {
 		return topic;
 	}
-	public void setTopic(int topic) {
+	public void setTopic(String topic) {
 		this.topic = topic;
 	}
 	public Object getValue() {

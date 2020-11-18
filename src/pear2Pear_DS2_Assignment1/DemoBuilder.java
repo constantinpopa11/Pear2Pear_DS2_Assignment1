@@ -1,5 +1,8 @@
 package pear2Pear_DS2_Assignment1;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
 import agents.Relay;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactory;
@@ -16,6 +19,7 @@ import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridBuilderParameters;
 import repast.simphony.space.grid.SimpleGridAdder;
 import repast.simphony.space.grid.StrictBorders;
+import security.KeyManager;
 
 public class DemoBuilder implements ContextBuilder<Object> {
 
@@ -54,6 +58,15 @@ public class DemoBuilder implements ContextBuilder<Object> {
 			NdPoint pt = space.getLocation(obj);
 			grid.moveTo(obj , (int)pt.getX(), (int)pt.getY());
 		}
+		
+        KeyManager km;
+        try {
+            km = new KeyManager(1024, params.getInteger("relayCount"));
+            km.createKeys();
+
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+            System.err.println(e.getMessage());
+        }
 
 
 		return context ;
