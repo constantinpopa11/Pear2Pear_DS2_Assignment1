@@ -89,7 +89,7 @@ public class Relay {
 			forward(perturbation);
 			
 			if(this.id == Options.NODE_A_LATENCY)
-				DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount());
+				DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
 			
 			//code that might be recycled later
 //			Network<Object> net = Network<Object>) context .
@@ -327,7 +327,10 @@ public class Relay {
 		//Add the perturbation to the associated source's list
 		log.get(p.getSource()).add(p);
 		
-			
+		//If this node is in charge of collecting data about latency and the sender of the perturbation is too, collect data
+		if(this.id == Options.NODE_B_LATENCY && p.getSource() == Options.NODE_A_LATENCY) {
+			DataCollector.saveLatency(p, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencyReceiver.csv");
+		}
 		
 	}
 	

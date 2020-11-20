@@ -12,22 +12,32 @@ public class DataCollector {
 
 	public static void clearFiles() {
 		try {
+			//clear LatencySender
 			FileWriter fw = new FileWriter("LatencySender.csv", false);
 			PrintWriter pw = new PrintWriter(fw, false);
+			pw.write("Source;Reference;Payload;Tick" + '\n');
 	        pw.flush();
 	        pw.close();
 	        fw.close();
+	        
+	        //clear LatencyReceiver
+	        FileWriter fw2 = new FileWriter("LatencyReceiver.csv", false);
+			PrintWriter pw2 = new PrintWriter(fw2, false);
+			pw2.write("Source;Reference;Payload;Tick" + '\n');
+	        pw2.flush();
+	        pw2.close();
+	        fw2.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	
-	public static void saveLatency(Perturbation p, double tick) {
+	public static void saveLatency(Perturbation p, double tick, String fileName) {
 		
 		CSVWriter writer;
 		try {
-			writer = new CSVWriter(new FileWriter("LatencySender.csv", true), ';', '\0');
+			writer = new CSVWriter(new FileWriter(fileName, true), ';', '\0');
 			String[] entries = {p.getSource() + "", p.getReference() + "", "payload", tick + ""};
 			writer.writeNext(entries);
 			writer.close();
