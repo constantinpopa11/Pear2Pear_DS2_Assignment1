@@ -5,6 +5,14 @@ public class MulticastMessage {
 	private String topic;
 	private Object value;
 	
+	
+	
+	public MulticastMessage(int group, String topic, Object value) {
+		super();
+		this.group = group;
+		this.topic = topic;
+		this.value = value;
+	}
 	public int getGroup() {
 		return group;
 	}

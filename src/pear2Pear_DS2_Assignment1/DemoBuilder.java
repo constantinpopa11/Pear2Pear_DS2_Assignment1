@@ -3,6 +3,7 @@ package pear2Pear_DS2_Assignment1;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
+import Utils.*;
 import agents.Relay;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactory;
@@ -22,14 +23,19 @@ import repast.simphony.space.grid.SimpleGridAdder;
 import repast.simphony.space.grid.StrictBorders;
 import security.KeyManager;
 
+import Utils.Options;
+
 public class DemoBuilder implements ContextBuilder<Object> {
 
 	@Override
 	public Context build(Context<Object> context) {
 		context.setId("Pear2Pear_DS2_Assignment1");
-
-		//Used to retrieve relay count parameter
-		Parameters params = RunEnvironment.getInstance().getParameters();
+		
+		//Load the parameters
+		Options.load();
+		
+		//Clearing files
+		DataCollector.clearFiles();
 		
 		//TODO: new parameter for the topology
 		// O - ring
@@ -68,14 +74,16 @@ public class DemoBuilder implements ContextBuilder<Object> {
 						)
 				);
 		
+
 		//Create and add the relays to the space
-		int relayCount = params.getInteger("relayCount");
+
+		int relayCount = Options.RELAY_COUNT;
 		for (int i = 0; i < relayCount ; i ++) {
 			context.add (new Relay(space , grid, i));
 		}
 		
 		//Position the nodes in a specific way to create the needed topology
-		buildTopology(context, space, params);
+		buildTopology(context, space);
 		
 		//Move to the relative grid cell
 		for (Object obj : context) {
@@ -86,7 +94,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		//Generate public and private keys
         KeyManager km;
         try {
-            km = new KeyManager(1024, params.getInteger("relayCount"));
+            km = new KeyManager(1024, Options.RELAY_COUNT);
             km.createKeys();
 
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
@@ -97,9 +105,9 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		return context ;
 	}
 	
-	private void buildTopology(Context<Object> context, ContinuousSpace<Object> space, Parameters params) {
+	private void buildTopology(Context<Object> context, ContinuousSpace<Object> space) {
 		String topology = "*";
-		int n = params.getInteger("relayCount");
+		int n = Options.RELAY_COUNT;
 		
 		//Ring topology
 		if(topology.compareTo("O") == 0) {

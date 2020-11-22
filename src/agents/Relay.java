@@ -35,6 +35,8 @@ import repast.simphony.util.ContextUtils;
 import repast.simphony.util.SimUtilities;
 import security.AsymmetricCryptography;
 import security.KeyManager;
+import Utils.DataCollector;
+import Utils.Options;
 
 public class Relay {
 
@@ -47,10 +49,9 @@ public class Relay {
 	private Map<Integer, Integer> frontier; //reference of next perturbation per peer to be delivered
 	private HashSet<String> seenARQs;
 	private Map<Integer, List<String>> subscriptions;
-	
-	//Retrieve simulation parameters
-	Parameters params = RunEnvironment.getInstance().getParameters();
-	private double probabilityOfPerturbation = params.getDouble("probabilityOfPerturbation");
+
+	//Used to probability of perturbation count parameter
+	private double probabilityOfPerturbation = Options.PROBABILITY_OF_PERTURBATION;
 	
 	public Relay(ContinuousSpace<Object> space, Grid<Object> grid, int id) {
 		this.log = new HashMap<>();
@@ -87,15 +88,24 @@ public class Relay {
 			//TODO: smarter payload value?
 			System.out.println("Relay(" + id + "): generating perturbation"
 					+ "<" + id + ", " + this.clock + ", " + new String("ciao") + ">");
+			
+			Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.VALUE_BROADCAST, new String("ciao"));
+			forward(perturbation);
+			
+			if(this.id == Options.NODE_A_LATENCY)
+				DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
+			
 			forward(new Perturbation(this.id, this.clock++, Type.VALUE_BROADCAST, new String("ciao")));
 		} else if(coinToss2 <= probabilityOfPerturbation) { //private message
-			int secretDestination = (id + 1) % params.getInteger("relayCount");
+			//each relays sends a private message to relay with id+1
+			int secretDestination = (id + 1) % Options.RELAY_COUNT;
 			
 			UnicastMessage m = new UnicastMessage(secretDestination, "ciao");
 			SealedObject secret = AsymmetricCryptography.encryptPayload(m, KeyManager.PUBLIC_KEYS[secretDestination]);
 			forward(new Perturbation(this.id, this.clock++, Type.ENCRYPTED_UNICAST, secret));
 		} else if(coinToss3 <= probabilityOfPerturbation) {
 			
+			MulticastMessage m = new MulticastMessage(0, "science", "1+1=2");
 		}
 	}
 	
@@ -320,7 +330,10 @@ public class Relay {
 		//Add the perturbation to the associated source's list
 		log.get(p.getSource()).add(p);
 		
-			
+		//If this node is in charge of collecting data about latency and the sender of the perturbation is too, collect data
+		if(this.id == Options.NODE_B_LATENCY && p.getSource() == Options.NODE_A_LATENCY) {
+			DataCollector.saveLatency(p, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencyReceiver.csv");
+		}
 		
 	}
 	
