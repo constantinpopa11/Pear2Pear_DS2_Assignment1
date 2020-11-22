@@ -7,6 +7,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SealedObject;
@@ -23,7 +24,6 @@ public class AsymmetricCryptography {
     		Cipher cipher = Cipher.getInstance("RSA");
 	        cipher.init(Cipher.ENCRYPT_MODE, key);
 	        encryptedPayload = new SealedObject(plainMessage, cipher);
-	        return encryptedPayload; 
     	} catch(GeneralSecurityException e) {
     		e.printStackTrace();
     	} catch(IOException e) {
@@ -39,12 +39,8 @@ public class AsymmetricCryptography {
 	    	cipher.init(Cipher.DECRYPT_MODE, key);
 	        decryptedMessage = (UnicastMessage) sealedObject.getObject(cipher);
 	        
-	    } catch(GeneralSecurityException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
-		} catch(ClassNotFoundException e) {
-			e.printStackTrace();
+	    } catch(GeneralSecurityException | IOException | ClassNotFoundException e) {
+			//e.printStackTrace();
 		}
     	
     	return decryptedMessage;

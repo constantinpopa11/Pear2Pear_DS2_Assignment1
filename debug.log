@@ -1,4 +1,4 @@
-ERROR [AWT-EventQueue-0] 2020-11-18 21:44:58,437 repast.simphony.data2.engine.FileSinkComponentControllerAction - Error while creating FileDataSink. DataSet 'A Data Set' not found
+ERROR [AWT-EventQueue-0] 2020-11-22 15:09:05,506 repast.simphony.data2.engine.FileSinkComponentControllerAction - Error while creating FileDataSink. DataSet 'A Data Set' not found
 java.lang.NullPointerException
 	at repast.simphony.data2.engine.FileSinkComponentControllerAction.batchInitialize(FileSinkComponentControllerAction.java:90)
 	at repast.simphony.engine.controller.DefaultController$1.visit(DefaultController.java:192)
@@ -47,21 +47,18 @@ java.lang.NullPointerException
 	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
 	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
 	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
-ERROR [AWT-EventQueue-0] 2020-11-18 21:44:58,503 repast.simphony.ui.RSApplication - Error while initializing simulation
+ERROR [AWT-EventQueue-0] 2020-11-22 15:12:02,759 repast.simphony.data2.engine.FileSinkComponentControllerAction - Error while creating FileDataSink. DataSet 'A Data Set' not found
 java.lang.NullPointerException
-	at security.KeyManager.createKeys(KeyManager.java:27)
-	at pear2Pear_DS2_Assignment1.DemoBuilder.build(DemoBuilder.java:65)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
+	at repast.simphony.data2.engine.FileSinkComponentControllerAction.batchInitialize(FileSinkComponentControllerAction.java:90)
+	at repast.simphony.engine.controller.DefaultController$1.visit(DefaultController.java:192)
+	at repast.simphony.engine.controller.DefaultController$1.visit(DefaultController.java:1)
 	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:292)
 	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:295)
 	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:295)
 	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:288)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:157)
+	at repast.simphony.engine.controller.DefaultController.batchInitialize(DefaultController.java:190)
+	at repast.simphony.engine.controller.DefaultController.batchInitialize(DefaultController.java:349)
+	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:155)
 	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
 	at java.desktop/javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1967)
 	at java.desktop/javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2308)
@@ -99,7 +96,7 @@ java.lang.NullPointerException
 	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
 	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
 	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
-ERROR [AWT-EventQueue-0] 2020-11-18 21:46:58,531 repast.simphony.data2.engine.FileSinkComponentControllerAction - Error while creating FileDataSink. DataSet 'A Data Set' not found
+ERROR [AWT-EventQueue-0] 2020-11-22 15:12:18,391 repast.simphony.data2.engine.FileSinkComponentControllerAction - Error while creating FileDataSink. DataSet 'A Data Set' not found
 java.lang.NullPointerException
 	at repast.simphony.data2.engine.FileSinkComponentControllerAction.batchInitialize(FileSinkComponentControllerAction.java:90)
 	at repast.simphony.engine.controller.DefaultController$1.visit(DefaultController.java:192)

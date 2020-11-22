@@ -34,6 +34,7 @@ import repast.simphony.space.grid.GridPoint;
 import repast.simphony.util.ContextUtils;
 import repast.simphony.util.SimUtilities;
 import security.AsymmetricCryptography;
+import security.KeyManager;
 
 public class Relay {
 
@@ -47,7 +48,7 @@ public class Relay {
 	private HashSet<String> seenARQs;
 	private Map<Integer, List<String>> subscriptions;
 	
-	//Used to probability of perturbation count parameter
+	//Retrieve simulation parameters
 	Parameters params = RunEnvironment.getInstance().getParameters();
 	private double probabilityOfPerturbation = params.getDouble("probabilityOfPerturbation");
 	
@@ -61,6 +62,7 @@ public class Relay {
 		this.id = id;
 		
 		//random way to generate subscriptions
+		//Basically the nodes whose id is a multiple of 7 will be subscribed to these topics
 		if(id % 7 == 0) {
 			subscriptions = new HashMap<>();
 			List<String> topics = new ArrayList<>();
@@ -78,32 +80,22 @@ public class Relay {
 	@ScheduledMethod(start=1, interval=1, priority=100) 
 	public void step() {
 		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
+		double coinToss2 = RandomHelper.nextDoubleFromTo(0, 1);
+		double coinToss3 = RandomHelper.nextDoubleFromTo(0, 1);
 		//TODO add threshold parameter
-		if(coinToss <= probabilityOfPerturbation) { //propagate a perturbation
+		if(coinToss <= probabilityOfPerturbation) { //propagate a value broadcast perturbation
+			//TODO: smarter payload value?
 			System.out.println("Relay(" + id + "): generating perturbation"
 					+ "<" + id + ", " + this.clock + ", " + new String("ciao") + ">");
 			forward(new Perturbation(this.id, this.clock++, Type.VALUE_BROADCAST, new String("ciao")));
-
-			//code that might be recycled later
-//			Network<Object> net = Network<Object>) context .
-//					getProjection(" infection network ");
-//			net.addEdge this, zombie);
-
-			// use the GridCellNgh class to create GridCells for
-			// the surrounding neighborhood .
-			//GridCellNgh<Relay> nghCreator = new GridCellNgh<Relay>(grid, pt, Relay.class, 1, 1);
-			// import repast.simphony.query.space.grid.GridCell
-			//List<GridCell<Relay>> gridCells = nghCreator.getNeighborhood(true);
-			//SimUtilities.shuffle(gridCells, RandomHelper.getUniform());
-
-			//		GridPoint pointWithMostHumans = null ;
-			//		int maxCount = -1;
-			//		for(GridCell<Relay> cell : gridCells) {
-			//			if(cell.size()> maxCount) {
-			//				pointWithMostHumans = cell.getPoint();
-			//				maxCount = cell.size();
-			//			}
-			//		}
+		} else if(coinToss2 <= probabilityOfPerturbation) { //private message
+			int secretDestination = (id + 1) % params.getInteger("relayCount");
+			
+			UnicastMessage m = new UnicastMessage(secretDestination, "ciao");
+			SealedObject secret = AsymmetricCryptography.encryptPayload(m, KeyManager.PUBLIC_KEYS[secretDestination]);
+			forward(new Perturbation(this.id, this.clock++, Type.ENCRYPTED_UNICAST, secret));
+		} else if(coinToss3 <= probabilityOfPerturbation) {
+			
 		}
 	}
 	
@@ -126,7 +118,7 @@ public class Relay {
 					p,
 					space, grid,
 					DiscretePropagation.PROPAGATION_ANGLES[i], 
-					RandomHelper.nextDoubleFromTo(0.3, 0.7)); //TODO: add as parameter
+					RandomHelper.nextDoubleFromTo(1.0, 2.0)); //TODO: add as parameter
 			context.add(propagation);
 			//Finally place the perturbation in the space
 			//Initially the perturbation has the same position as the source, 
@@ -138,21 +130,26 @@ public class Relay {
 	
 	
 	//Automatic retransmission requests 
-	@ScheduledMethod(start=1, interval=10, priority=50) //TODO: decide interval
+	@ScheduledMethod(start=1, priority=50) //TODO: decide interval
 	public void automaticRetransmissionMechanism() {
-		//TODO: implement
-		for(Map.Entry<Integer, ArrayList<Perturbation>> perSourceLog : log.entrySet()) {
-			List <Perturbation> perturbations = perSourceLog.getValue();
-			Perturbation latestPerturbation = perturbations.get(perturbations.size() - 1);
-			System.out.println("Relay(" + id + "): broadcasting ARQ for perturbation " 
-					+ "<src=" + latestPerturbation.getSource() + ", "
-					+ "ref=" + (latestPerturbation.getReference()+1) + ">");
-			final String uuid = UUID.randomUUID().toString();
-			seenARQs.add(uuid);
-			forward(new Perturbation(latestPerturbation.getSource(), 
-					latestPerturbation.getReference() + 1, Type.ARQ, uuid)); //TODO:what should payload value be?
+		int tickCount = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		//Relay activate this mechanism at different times. 
+		//This is needed in order to reduce the flooding effect 
+		//when all the relays start propagating ARQs at the same time.
+		//e.g: Relay 1, 11, 21, 31....91, 101, 111, 121 etc send ARQ at tick 1, 11, 21, 31.....
+		if(tickCount % 10 == id % 10) {
+			for(Map.Entry<Integer, ArrayList<Perturbation>> perSourceLog : log.entrySet()) {
+				List <Perturbation> perturbations = perSourceLog.getValue();
+				Perturbation latestPerturbation = perturbations.get(perturbations.size() - 1);
+				System.out.println("Relay(" + id + "): broadcasting ARQ for perturbation " 
+						+ "<src=" + latestPerturbation.getSource() + ", "
+						+ "ref=" + (latestPerturbation.getReference()+1) + ">");
+				final String uuid = UUID.randomUUID().toString();
+				seenARQs.add(uuid);
+				forward(new Perturbation(latestPerturbation.getSource(), 
+						latestPerturbation.getReference() + 1, Type.ARQ, uuid)); //TODO:what should payload value be?
+			}
 		}
-		
 	}
 
 	//When a perturbation propagates, relays get notified so they check 
@@ -310,6 +307,9 @@ public class Relay {
 			
 			if(decryptedMessage != null) {
 				System.out.println("Relay(" + id + "): Relay(" + p.getSource() + ") sent me an encrypted private message");
+			} else {
+				System.out.println("Relay(" + id + "): Encrypted message from Relay " +
+						p.getSource() + " couldn't be derypted.");
 			}
 		}
 		
