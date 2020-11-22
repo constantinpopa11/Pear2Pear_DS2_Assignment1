@@ -37,13 +37,11 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		//Clearing files
 		DataCollector.clearFiles();
 		
-		//TODO: new parameter for the topology
 		// O - ring
 		// * - (extended) star
 		// R - Random
 		// | - Line
-		//String topology = params.getString("topology");
-		String topology = "O";
+		String topology = Options.TOPOLOGY;
 		
 		ContinuousSpaceFactory spaceFactory =
 				ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
@@ -54,13 +52,13 @@ public class DemoBuilder implements ContextBuilder<Object> {
 			space = spaceFactory.createContinuousSpace(
 					"space", context,
 					new RandomCartesianAdder<Object>(), //random location
-					new repast.simphony.space.continuous.StrictBorders(), 50, 50
+					new repast.simphony.space.continuous.StrictBorders(), Options.ENVIRONMENT_DIMENSION, Options.ENVIRONMENT_DIMENSION
 					);
 		} else {
 			space = spaceFactory.createContinuousSpace(
 					"space", context,
 					new SimpleCartesianAdder<Object>(), //location has still to be decided in this case
-					new repast.simphony.space.continuous.StrictBorders(), 50, 50
+					new repast.simphony.space.continuous.StrictBorders(), Options.ENVIRONMENT_DIMENSION, Options.ENVIRONMENT_DIMENSION
 					);
 		}
 		
@@ -70,7 +68,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
 				new GridBuilderParameters <Object>(
 						new StrictBorders(),
 						new SimpleGridAdder<Object>(),
-						true, 50, 50
+						true, Options.ENVIRONMENT_DIMENSION, Options.ENVIRONMENT_DIMENSION
 						)
 				);
 		
@@ -83,7 +81,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		}
 		
 		//Position the nodes in a specific way to create the needed topology
-		buildTopology(context, space);
+		buildTopology(context, space, topology);
 		
 		//Move to the relative grid cell
 		for (Object obj : context) {
@@ -105,15 +103,15 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		return context ;
 	}
 	
-	private void buildTopology(Context<Object> context, ContinuousSpace<Object> space) {
-		String topology = "*";
+	private void buildTopology(Context<Object> context, ContinuousSpace<Object> space, String topology) {
+		
 		int n = Options.RELAY_COUNT;
 		
 		//Ring topology
 		if(topology.compareTo("O") == 0) {
 			//TODO: parametrize
-			double radius = (50.0 * 0.8) / 2;
-			double offset = (50 / 2) - 0.01;
+			double radius = (Options.ENVIRONMENT_DIMENSION * 0.8) / 2;
+			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01;
 			int k = 0;
 			
 			for (Object obj : context) {
@@ -125,7 +123,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		} else if(topology.compareTo("*") == 0) { //Extended star topology
 			int layer = 0;
 			int k = 0;
-			double offset = (50 / 2) - 0.01;
+			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01;
 			
 			for (Object obj : context) {
 				//125 is the maximum amount of relays that can be used during simulation
@@ -133,8 +131,8 @@ public class DemoBuilder implements ContextBuilder<Object> {
 				double layerSize = 4 * layer;
 				
 				if(layer == 0) { //This is the (first) central relay
-					double centerX = 50.0 / 2;
-					double centerY = 50.0 / 2;
+					double centerX = Options.ENVIRONMENT_DIMENSION / 2;
+					double centerY = Options.ENVIRONMENT_DIMENSION / 2;
 					space.moveTo(obj, centerX, centerY);
 					layer++;
 				} else { //all the other relays follow this rule
@@ -152,9 +150,9 @@ public class DemoBuilder implements ContextBuilder<Object> {
 				}
 			}
 		} else if(topology.compareTo("|") == 0) { // Line topology
-			double interval = (50.0 * 0.95) / n;
-			double y = 50.0 / 2;
-			double start = (50.0 * 0.05) / 2 ;
+			double interval = (Options.ENVIRONMENT_DIMENSION * 0.95) / n;
+			double y = Options.ENVIRONMENT_DIMENSION / 2;
+			double start = (Options.ENVIRONMENT_DIMENSION * 0.05) / 2 ;
 			int k = 0;
 			
 			for (Object obj : context) {

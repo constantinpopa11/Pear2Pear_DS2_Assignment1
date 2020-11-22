@@ -89,20 +89,31 @@ public class Relay {
 			System.out.println("Relay(" + id + "): generating perturbation"
 					+ "<" + id + ", " + this.clock + ", " + new String("ciao") + ">");
 			
+			//Generate perturbation and deliver to yourself
 			Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.VALUE_BROADCAST, new String("ciao"));
 			forward(perturbation);
+			deliver(perturbation);
 			
+			//Write generated message for latency measurement
 			if(this.id == Options.NODE_A_LATENCY)
 				DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
-			
-			forward(new Perturbation(this.id, this.clock++, Type.VALUE_BROADCAST, new String("ciao")));
+
 		} else if(coinToss2 <= probabilityOfPerturbation) { //private message
 			//each relays sends a private message to relay with id+1
 			int secretDestination = (id + 1) % Options.RELAY_COUNT;
 			
 			UnicastMessage m = new UnicastMessage(secretDestination, "ciao");
 			SealedObject secret = AsymmetricCryptography.encryptPayload(m, KeyManager.PUBLIC_KEYS[secretDestination]);
-			forward(new Perturbation(this.id, this.clock++, Type.ENCRYPTED_UNICAST, secret));
+			
+			//Generate perturbation and deliver to yourself
+			Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.ENCRYPTED_UNICAST, secret);
+			forward(perturbation);
+			deliver(perturbation);
+			
+			//Write generated message for latency measurement
+			if(this.id == Options.NODE_A_LATENCY)
+				DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
+			
 		} else if(coinToss3 <= probabilityOfPerturbation) {
 			
 			MulticastMessage m = new MulticastMessage(0, "science", "1+1=2");

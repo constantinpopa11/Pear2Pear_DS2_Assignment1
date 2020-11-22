@@ -6,6 +6,19 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
+				<parameter name="TOPOLOGY" displayName="Topology of the network" type="java.lang.String" 
+						defaultValue="O" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
+									values="O * R | "
+						
+		/>
+				<parameter name="NODE_B_LATENCY" displayName="Receiver for latency measurement" type="int" 
+						defaultValue="0" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
 				<parameter name="MAX_PROPAGATION_DISTANCE" displayName="Perturbation range" type="int" 
 						defaultValue="15" 
 						isReadOnly="false" 
