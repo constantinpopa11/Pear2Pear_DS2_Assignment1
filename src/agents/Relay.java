@@ -81,8 +81,8 @@ public class Relay {
 	@ScheduledMethod(start=1, interval=1, priority=100) 
 	public void step() {
 		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
-		double coinToss2 = RandomHelper.nextDoubleFromTo(0, 1);
-		double coinToss3 = RandomHelper.nextDoubleFromTo(0, 1);
+		//double coinToss2 = RandomHelper.nextDoubleFromTo(0, 1);
+		//double coinToss3 = RandomHelper.nextDoubleFromTo(0, 1);
 		//TODO add threshold parameter
 		if(coinToss <= probabilityOfPerturbation) { //propagate a value broadcast perturbation
 			//TODO: smarter payload value?
@@ -98,7 +98,7 @@ public class Relay {
 			if(this.id == Options.NODE_A_LATENCY)
 				DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
 
-		} else if(coinToss2 <= probabilityOfPerturbation) { //private message
+		} else if(coinToss > probabilityOfPerturbation && coinToss <= probabilityOfPerturbation * 2) { //private message
 			//each relays sends a private message to relay with id+1
 			int secretDestination = (id + 1) % Options.RELAY_COUNT;
 			
@@ -114,7 +114,7 @@ public class Relay {
 			if(this.id == Options.NODE_A_LATENCY)
 				DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
 			
-		} else if(coinToss3 <= probabilityOfPerturbation) {
+		} else if(coinToss > probabilityOfPerturbation * 2 && coinToss <= probabilityOfPerturbation * 3) {
 			
 			MulticastMessage m = new MulticastMessage(0, "science", "1+1=2");
 		}
@@ -370,5 +370,21 @@ public class Relay {
 		return result;
 	}
 	
+	public String saveIsolation() {
+		
+		final Map<Integer, ArrayList<Perturbation>> temp;
+		temp = new HashMap<>();
+		
+		for(Map.Entry<Integer, ArrayList<Perturbation>> logLine : log.entrySet()) {
+			temp.put(logLine.getKey(), logLine.getValue());
+		}
+		
+		temp.remove(Options.NODE_A_LATENCY);
+		
+		if(temp.isEmpty())
+			DataCollector.saveIsolation(this.id, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "IsolatedRelays.csv");
+		
+		return "";
+	}
 }
 

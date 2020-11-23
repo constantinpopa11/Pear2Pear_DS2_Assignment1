@@ -27,6 +27,15 @@ public class DataCollector {
 	        pw2.flush();
 	        pw2.close();
 	        fw2.close();
+	        
+	        //clear IsolatedRelays
+	        FileWriter fw3 = new FileWriter("IsolatedRelays.csv", false);
+			PrintWriter pw3 = new PrintWriter(fw3, false);
+			pw3.write("ID;Tick" + '\n');
+	        pw3.flush();
+	        pw3.close();
+	        fw3.close();
+	        
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -39,6 +48,18 @@ public class DataCollector {
 		try {
 			writer = new CSVWriter(new FileWriter(fileName, true), ';', '\0');
 			String[] entries = {p.getSource() + "", p.getReference() + "", "payload", tick + ""};
+			writer.writeNext(entries);
+			writer.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void saveIsolation(int id, double tick, String fileName) {
+		CSVWriter writer;
+		try {
+			writer = new CSVWriter(new FileWriter(fileName, true), ';', '\0');
+			String[] entries = {id + "",  tick + ""};
 			writer.writeNext(entries);
 			writer.close();
 		} catch (Exception e) {
