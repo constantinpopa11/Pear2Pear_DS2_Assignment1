@@ -43,6 +43,11 @@ public class Perturbation {
 		return new Perturbation(this.source, this.reference, this.type, this.payload);
 	}
 	
+	@Override
+	public int hashCode() {
+		return (1000000 * source + reference);
+	}
+	
 	public int getSource() {
 		return source;
 	}
@@ -67,5 +72,4 @@ public class Perturbation {
 	public void setType(Type type) {
 		this.type = type;
 	}
-	
 }

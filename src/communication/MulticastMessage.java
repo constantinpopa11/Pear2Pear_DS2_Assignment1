@@ -6,7 +6,6 @@ public class MulticastMessage {
 	private Object value;
 	
 	
-	
 	public MulticastMessage(int group, String topic, Object value) {
 		super();
 		this.group = group;

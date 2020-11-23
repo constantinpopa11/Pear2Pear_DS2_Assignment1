@@ -1,4 +1,6 @@
 <context id="Pear2Pear_DS2_Assignment1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://repast.org/scenario/context">
   	<projection type="continuous space" id="space"/>
     <projection type="grid" id="grid"/>
+    <projection type ="network" id ="delivery network"/>
+    
 </context>

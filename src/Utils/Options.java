@@ -11,10 +11,11 @@ public class Options {
 	public static int MAX_PROPAGATION_DISTANCE;
 	public static int NODE_A_LATENCY;
 	public static int NODE_B_LATENCY;
-	
 	public static String TOPOLOGY;
-	
 	public static int ENVIRONMENT_DIMENSION;
+	public static double BANDWIDTH; 
+	public static double PERTURBATION_SIZE;
+	public static double MAX_PROPAGATION_SPEED;
 	
 	public static void load() {
 		Parameters params = RunEnvironment.getInstance().getParameters();
@@ -26,6 +27,9 @@ public class Options {
 		NODE_B_LATENCY = params.getInteger("NODE_B_LATENCY");
 		TOPOLOGY = params.getString("TOPOLOGY");
 		ENVIRONMENT_DIMENSION = params.getInteger("ENVIRONMENT_DIMENSION");
+		BANDWIDTH =  1000000;
+		MAX_PROPAGATION_SPEED = 1.5;
+		PERTURBATION_SIZE = 10.0;
 		
 	}
 }

@@ -29,6 +29,7 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
+import repast.simphony.space.graph.Network;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridPoint;
 import repast.simphony.util.ContextUtils;
@@ -49,6 +50,7 @@ public class Relay {
 	private Map<Integer, Integer> frontier; //reference of next perturbation per peer to be delivered
 	private HashSet<String> seenARQs;
 	private Map<Integer, List<String>> subscriptions;
+	private HashSet<Perturbation> livePerturbations;
 
 	//Used to probability of perturbation count parameter
 	private double probabilityOfPerturbation = Options.PROBABILITY_OF_PERTURBATION;
@@ -61,11 +63,13 @@ public class Relay {
 		this.space = space;
 		this.grid = grid;
 		this.id = id;
+		livePerturbations = new HashSet<>();
+		subscriptions = new HashMap<>();
+		
 		
 		//random way to generate subscriptions
 		//Basically the nodes whose id is a multiple of 7 will be subscribed to these topics
 		if(id % 7 == 0) {
-			subscriptions = new HashMap<>();
 			List<String> topics = new ArrayList<>();
 			topics.add("science");
 			topics.add("literature");
@@ -85,38 +89,15 @@ public class Relay {
 		//double coinToss3 = RandomHelper.nextDoubleFromTo(0, 1);
 		//TODO add threshold parameter
 		if(coinToss <= probabilityOfPerturbation) { //propagate a value broadcast perturbation
-			//TODO: smarter payload value?
-			System.out.println("Relay(" + id + "): generating perturbation"
-					+ "<" + id + ", " + this.clock + ", " + new String("ciao") + ">");
+			broadcast(new String("ciao"));
 			
-			//Generate perturbation and deliver to yourself
-			Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.VALUE_BROADCAST, new String("ciao"));
-			forward(perturbation);
-			deliver(perturbation);
-			
-			//Write generated message for latency measurement
-			if(this.id == Options.NODE_A_LATENCY)
-				DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
-
 		} else if(coinToss > probabilityOfPerturbation && coinToss <= probabilityOfPerturbation * 2) { //private message
 			//each relays sends a private message to relay with id+1
 			int secretDestination = (id + 1) % Options.RELAY_COUNT;
-			
-			UnicastMessage m = new UnicastMessage(secretDestination, "ciao");
-			SealedObject secret = AsymmetricCryptography.encryptPayload(m, KeyManager.PUBLIC_KEYS[secretDestination]);
-			
-			//Generate perturbation and deliver to yourself
-			Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.ENCRYPTED_UNICAST, secret);
-			forward(perturbation);
-			deliver(perturbation);
-			
-			//Write generated message for latency measurement
-			if(this.id == Options.NODE_A_LATENCY)
-				DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
+			privateSend(secretDestination, new String("ciao"));
 			
 		} else if(coinToss > probabilityOfPerturbation * 2 && coinToss <= probabilityOfPerturbation * 3) {
-			
-			MulticastMessage m = new MulticastMessage(0, "science", "1+1=2");
+			groupSend(0, "science", "1+1=2");
 		}
 	}
 	
@@ -129,6 +110,8 @@ public class Relay {
 		GridPoint pt = grid.getLocation(this);
 		Context<Object> context = ContextUtils.getContext(this);
 		
+		livePerturbations.add(p);
+		
 		//The propagation of a perturbation/wave is simulated by generating 8 perturbation clones
 		//and propagating them along the 9 directions/angles (0, 45, 90, 135...)
 		//Each perturbation clone has its own propagation speed in order to simulate the propagation delay
@@ -139,7 +122,7 @@ public class Relay {
 					p,
 					space, grid,
 					DiscretePropagation.PROPAGATION_ANGLES[i], 
-					RandomHelper.nextDoubleFromTo(1.0, 2.0)); //TODO: add as parameter
+					this);
 			context.add(propagation);
 			//Finally place the perturbation in the space
 			//Initially the perturbation has the same position as the source, 
@@ -151,7 +134,7 @@ public class Relay {
 	
 	
 	//Automatic retransmission requests 
-	@ScheduledMethod(start=1, priority=50) //TODO: decide interval
+	@ScheduledMethod(start=1, priority=50, interval=1) //TODO: decide interval
 	public void automaticRetransmissionMechanism() {
 		int tickCount = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 		//Relay activate this mechanism at different times. 
@@ -199,7 +182,7 @@ public class Relay {
 //		}
 		
 		//thread safe method to inspect the nearby propagations
-		ContinuousWithin<Object> nearbyQuery = new ContinuousWithin(context, this, 2.0);
+		ContinuousWithin<Object> nearbyQuery = new ContinuousWithin(context, this, 5.0);
 		CopyOnWriteArrayList<Object> nearbyObjects = new CopyOnWriteArrayList<>();
 		nearbyQuery.query().forEach(nearbyObjects::add);
 
@@ -207,6 +190,7 @@ public class Relay {
 			if(obj instanceof DiscretePropagation) {
 				DiscretePropagation propagation = (DiscretePropagation) obj;
 				Perturbation p = propagation.getPerturbation();
+				Relay forwarder = propagation.getForwarder();
 
 				if(p.getType() == Type.ARQ) {
 					int src = p.getSource();
@@ -239,6 +223,9 @@ public class Relay {
 						forward(p);
 						deliver(p);
 						frontier.put(p.getSource(), nextRef + 1);
+
+						Network<Object> net = (Network<Object>) context.getProjection("delivery network");
+						net.addEdge(this, forwarder);
 					}
 						
 					//Relay__II(the entire loop)
@@ -330,7 +317,7 @@ public class Relay {
 				System.out.println("Relay(" + id + "): Relay(" + p.getSource() + ") sent me an encrypted private message");
 			} else {
 				System.out.println("Relay(" + id + "): Encrypted message from Relay " +
-						p.getSource() + " couldn't be derypted.");
+						p.getSource() + " couldn't be decrypted.");
 			}
 		}
 		
@@ -348,13 +335,53 @@ public class Relay {
 		
 	}
 	
-	//TODO: implement group_send, private_send, publish(?) methods
-	private void privateSend(int destination, Object value) {
-		forward(new Perturbation(this.id, clock++, Type.UNICAST_MESSAGE, value));
+	private void broadcast(Object value) {
+		//TODO: smarter payload value?
+		System.out.println("Relay(" + id + "): generating perturbation"
+				+ "<" + id + ", " + this.clock + ", val>");
+		
+		//Generate perturbation and deliver to yourself
+		Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.VALUE_BROADCAST, value);
+		forward(perturbation);
+		deliver(perturbation);
+		
+		//Write generated message for latency measurement
+		if(this.id == Options.NODE_A_LATENCY)
+			DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
 	}
 	
-	private void groupSend(int groupId, int topic, Object value) {
-		forward(new Perturbation(this.id, clock, Type.MULTICAST_MESSAGE, value));
+	private void privateSend(int destination, Object value) {
+		//TODO: smarter payload value?
+		System.out.println("Relay(" + id + "): generating perturbation"
+				+ "<" + id + ", " + this.clock + ", P.M.>");
+		
+		UnicastMessage m = new UnicastMessage(destination, value);
+		SealedObject secret = AsymmetricCryptography.encryptPayload(m, KeyManager.PUBLIC_KEYS[destination]);
+		
+		//Generate perturbation and deliver to yourself
+		Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.ENCRYPTED_UNICAST, secret);
+		forward(perturbation);
+		deliver(perturbation);
+		
+		//Write generated message for latency measurement
+		if(this.id == Options.NODE_A_LATENCY)
+			DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
+	}
+	
+	private void groupSend(int groupId, String topic, Object value) {
+		//TODO: smarter payload value?
+				System.out.println("Relay(" + id + "): generating perturbation"
+						+ "<" + id + ", " + (this.clock+1) + ", G.M.>");
+				
+		MulticastMessage m = new MulticastMessage(groupId, topic, value);
+		Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.MULTICAST_MESSAGE, m);
+		forward(perturbation);
+		deliver(perturbation);
+		
+		//Write generated message for latency measurement
+		if(this.id == Options.NODE_A_LATENCY)
+			DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
+	
 	}
 	
 	@Override
@@ -379,12 +406,35 @@ public class Relay {
 			temp.put(logLine.getKey(), logLine.getValue());
 		}
 		
-		temp.remove(Options.NODE_A_LATENCY);
+		temp.remove(this.id);
 		
 		if(temp.isEmpty())
 			DataCollector.saveIsolation(this.id, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "IsolatedRelays.csv");
 		
 		return "";
+	}
+	
+	public void releaseBandwidth(Perturbation p) {
+		livePerturbations.remove(p);
+	}
+	
+	
+	//Method to calculate the effective bandwidth based on how many perturbations
+	//this relay has forwarded. The greater the number of perturbations, the slower
+	//the propagation speed among the perturbations
+	public double getFairBandwidth() {
+		double totalSize = livePerturbations.size() * Options.PERTURBATION_SIZE;
+		double fairbandwidth = Options.BANDWIDTH / totalSize;
+		
+		//Perturbations can't propagate faster than a given value, so there is an upper bound
+		if(fairbandwidth > Options.MAX_PROPAGATION_SPEED)
+			return Options.MAX_PROPAGATION_SPEED;
+		else
+			return fairbandwidth;
+	}
+	
+	public int getId() {
+		return id;
 	}
 }
 

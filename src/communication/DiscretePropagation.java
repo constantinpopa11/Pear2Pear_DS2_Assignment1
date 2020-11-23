@@ -10,6 +10,7 @@ import repast.simphony.space.grid.Grid;
 import repast.simphony.util.ContextUtils;
 
 import Utils.Options;
+import agents.Relay;
 
 public class DiscretePropagation {
 	//Each propagation travels in a certain direction,
@@ -34,19 +35,21 @@ public class DiscretePropagation {
 	private ContinuousSpace<Object> space; //the space where relays are placed
 	private Grid<Object> grid; //an abstraction for the continuous space using a grid
 	private double propagationAngle; //one of the 8 possible angles a perturbation can travel
-	private double propagationSpeed; //how many units a perturbation can advance during a time interval
+	//private double propagationSpeed; //how many units a perturbation can advance during a time interval
 	//private NdPoint origin; //the initial position of the perturbation. I.E. the position of the sender 
 	private double traveledDistance; //the distance the perturbation has propagated along, expressed in units
+	private double size; //size of the perturbation
 	public boolean propagated; //used for notifying the relays which sense the medium for incoming perturbations
+	Relay forwarder;
 	
 	public DiscretePropagation(Perturbation perturbation, ContinuousSpace<Object> space, Grid<Object> grid,
-			double propagationAngle, double propagationSpeed) {
+			double propagationAngle, Relay forwarder) {
 		super();
 		this.perturbation = perturbation;
 		this.space = space;
 		this.grid = grid;
 		this.propagationAngle = propagationAngle;
-		this.propagationSpeed = propagationSpeed;
+		this.forwarder = forwarder;
 		this.traveledDistance = 0.0;
 		this.propagated = false;
 		this.MAX_PROPAGATION_DISTANCE = Options.MAX_PROPAGATION_DISTANCE;
@@ -58,6 +61,10 @@ public class DiscretePropagation {
 		//GridPoint pt = grid.getLocation (this);
 		//Get the space location of this perturbation
 		NdPoint spacePt = space.getLocation(this);
+		
+		//Update propagation speed based on bandwidth
+		double propagationSpeed = forwarder.getFairBandwidth();
+		
 		//Before propagating, check if the propagation hasn't reached the boundaries of the space
 		//and its maximum propagation range, otherwise it should disappear from the display 
 		if(spacePt.getX() + propagationSpeed < Options.ENVIRONMENT_DIMENSION 
@@ -81,25 +88,12 @@ public class DiscretePropagation {
 		} else {
 			Context<Object> context = ContextUtils.getContext(this);
 			context.remove(this);
+			forwarder.releaseBandwidth(perturbation);
 		}
-		
-		
-		//old code, probably will  never be used or maybe it will come in useful later, dont remove it yets
-		// use the GridCellNgh class to create GridCells for
-		// the surrounding neighborhood .
-//		GridCellNgh<Relay> nghCreator = new GridCellNgh<Relay>(grid, pt, Relay.class, 1 , 1);
-		// import repast.simphony.query.space.grid.GridCell
-//		List<GridCell<Relay>> gridCells = nghCreator.getNeighborhood (true);
-//		SimUtilities.shuffle (gridCells, RandomHelper.getUniform());
-
-		//		GridPoint pointWithMostHumans = null ;
-		//		int maxCount = -1;
-		//		for (GridCell<Relay> cell : gridCells) {
-		//			if (cell.size() > maxCount ) {
-		//				pointWithMostHumans = cell.getPoint();
-		//				maxCount = cell.size();
-		//			}
-		//		}
+	}
+	
+	public Relay getForwarder() {
+		return forwarder;
 	}
 
 	public Perturbation getPerturbation() {

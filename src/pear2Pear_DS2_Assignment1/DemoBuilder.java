@@ -8,6 +8,7 @@ import agents.Relay;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactory;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
+import repast.simphony.context.space.graph.NetworkBuilder;
 import repast.simphony.context.space.grid.GridFactory;
 import repast.simphony.context.space.grid.GridFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
@@ -43,6 +44,10 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		// | - Line
 		String topology = Options.TOPOLOGY;
 		
+		NetworkBuilder<Object> netBuilder = new NetworkBuilder<Object>("delivery network", context, true);
+		netBuilder.buildNetwork ();
+
+		
 		ContinuousSpaceFactory spaceFactory =
 				ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		ContinuousSpace<Object> space;
@@ -74,7 +79,6 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		
 
 		//Create and add the relays to the space
-
 		int relayCount = Options.RELAY_COUNT;
 		for (int i = 0; i < relayCount ; i ++) {
 			context.add (new Relay(space , grid, i));
@@ -110,20 +114,21 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		//Ring topology
 		if(topology.compareTo("O") == 0) {
 			//TODO: parametrize
-			double radius = (Options.ENVIRONMENT_DIMENSION * 0.8) / 2;
-			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01;
-			int k = 0;
+			double radius = (Options.ENVIRONMENT_DIMENSION * 0.85) / 2; //ring radius
+			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01; //useful for centering everything
+			int k = 0; //counter
 			
 			for (Object obj : context) {
+				//Calculate coordinates for each relay position
 				double x = radius * Math.cos((k * 2 * Math.PI) / n) + offset;
 				double y = radius * Math.sin((k * 2 * Math.PI) / n) + offset;
 				space.moveTo(obj, x, y);
 				k++;
 			}
 		} else if(topology.compareTo("*") == 0) { //Extended star topology
-			int layer = 0;
+			int layer = 0; //a star is composed by multiple layers of nodes
 			int k = 0;
-			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01;
+			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01; //useful for centering everything
 			
 			for (Object obj : context) {
 				//125 is the maximum amount of relays that can be used during simulation
@@ -150,9 +155,10 @@ public class DemoBuilder implements ContextBuilder<Object> {
 				}
 			}
 		} else if(topology.compareTo("|") == 0) { // Line topology
-			double interval = (Options.ENVIRONMENT_DIMENSION * 0.95) / n;
+			double interval = (Options.ENVIRONMENT_DIMENSION * 0.9) / (n-1); //distance adjacent relays
 			double y = Options.ENVIRONMENT_DIMENSION / 2;
-			double start = (Options.ENVIRONMENT_DIMENSION * 0.05) / 2 ;
+			double start = (Options.ENVIRONMENT_DIMENSION - ((n-1) * interval)) / 2; //position of first relay
+			
 			int k = 0;
 			
 			for (Object obj : context) {
