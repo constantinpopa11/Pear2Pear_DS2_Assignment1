@@ -101,15 +101,20 @@ public class Relay {
 	@ScheduledMethod(start=1, interval=1, priority=50) 
 	public void generatePerturbation() {
 		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
-		if(coinToss <= probabilityOfPerturbation) { //propagate a value broadcast perturbation
+		//Generate a broadcast with one third of the probability
+		if(coinToss <= (probabilityOfPerturbation / 3)) { //propagate a value broadcast perturbation
 			broadcast(new String("ciao"));
 			
-		} else if(coinToss > probabilityOfPerturbation && coinToss <= probabilityOfPerturbation * 2) { //private message
+		//Generate a private message if the value is between 1/3 and 2/3 of p
+		} else if((coinToss > (probabilityOfPerturbation / 3)) 
+				&& (coinToss <= ((probabilityOfPerturbation / 3) * 2))) { //private message
 			//each relays sends a private message to relay with identifier equal to id+1
 			int secretDestination = (id + 1) % Options.RELAY_COUNT;
 			privateSend(secretDestination, new String("ciao"));
 			
-		} else if(coinToss > probabilityOfPerturbation * 2 && coinToss <= probabilityOfPerturbation * 3) {
+		//Finally generate a group message if the probability is between 2/3 of and p
+		} else if((coinToss > ((probabilityOfPerturbation / 3) * 2)) 
+				&& (coinToss <= probabilityOfPerturbation)) {
 			groupSend(0, "science", "1+1=2");
 		}
 	}

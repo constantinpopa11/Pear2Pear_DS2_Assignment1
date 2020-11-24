@@ -14,6 +14,7 @@ public class Options {
 	public static double BANDWIDTH; 
 	public static double PERTURBATION_SIZE;
 	public static double MAX_PROPAGATION_SPEED;
+	public static double DELAY_PROBABILITY;
 	
 	public static int NODE_A_BROADCAST;
 	public static int NODE_B_BROADCAST;
@@ -27,8 +28,9 @@ public class Options {
 		TOPOLOGY = params.getString("TOPOLOGY");
 		ENVIRONMENT_DIMENSION = params.getInteger("ENVIRONMENT_DIMENSION");
 		BANDWIDTH =  params.getInteger("BANDWIDTH");
-		MAX_PROPAGATION_SPEED = 1.5;
+		MAX_PROPAGATION_SPEED = 1.5; //TODO: parametrize
 		PERTURBATION_SIZE = params.getDouble("PERTURBATION_SIZE");
+		DELAY_PROBABILITY = 0.0;
 		
 	}
 }

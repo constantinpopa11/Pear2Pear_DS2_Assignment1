@@ -4,6 +4,7 @@ import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.parameter.Parameters;
+import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
@@ -65,8 +66,15 @@ public class DiscretePropagation {
 		//Get the space location of this perturbation
 		NdPoint spacePt = space.getLocation(this);
 		
-		//Update propagation speed based on bandwidth
-		double propagationSpeed = forwarder.getFairBandwidth();
+		//Simulate perturbation delay
+		double delayMultiplier = 1.0;
+		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
+		if(coinToss <= Options.DELAY_PROBABILITY) {
+			delayMultiplier = RandomHelper.nextDoubleFromTo(0, 1);
+		}
+		
+		//Update propagation speed based on bandwidth and delay multiplier
+		double propagationSpeed = forwarder.getFairBandwidth() * delayMultiplier;
 		
 		//Before propagating, check if the propagation hasn't reached the boundaries of the space
 		//and its maximum propagation range, otherwise it should disappear from the display 
@@ -92,6 +100,7 @@ public class DiscretePropagation {
 			//When the propagation has traveled for a value equal to MAX_DISTANCE, it disappears
 			Context<Object> context = ContextUtils.getContext(this);
 			context.remove(this);
+			//Release the used bandwidth
 			forwarder.releaseBandwidth(perturbation);
 		}
 	}
