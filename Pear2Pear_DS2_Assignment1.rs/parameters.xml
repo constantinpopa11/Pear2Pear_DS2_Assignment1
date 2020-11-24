@@ -13,10 +13,10 @@
 									values="O * R | "
 						
 		/>
-				<parameter name="NODE_B_LATENCY" displayName="Receiver for latency measurement" type="int" 
-						defaultValue="0" 
+				<parameter name="PERTURBATION_SIZE" displayName="Size of the messages" type="double" 
+						defaultValue="10.0" 
 						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
 				<parameter name="MAX_PROPAGATION_DISTANCE" displayName="Perturbation range" type="int" 
@@ -37,18 +37,18 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
+				<parameter name="BANDWIDTH" displayName="Bandwidth of relays" type="int" 
+						defaultValue="1000000" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
 				<parameter name="PROBABILITY_OF_PERTURBATION" displayName="Probability of a new perturbation per tick" type="double" 
 						defaultValue="0.005" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									values="0.001 0.005 0.01 0.05 0.1 0.25 0.5 0.75 1.0 "
 						
-		/>
-				<parameter name="NODE_A_LATENCY" displayName="Sender for latency measurement" type="int" 
-						defaultValue="0" 
-						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
-									
 		/>
 		</parameters>
 
