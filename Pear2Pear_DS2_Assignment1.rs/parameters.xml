@@ -13,6 +13,12 @@
 									values="O * R | "
 						
 		/>
+				<parameter name="PERTURBATION_SIZE" displayName="Size of the messages" type="double" 
+						defaultValue="10.0" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
 				<parameter name="MAX_PROPAGATION_DISTANCE" displayName="Perturbation range" type="int" 
 						defaultValue="15" 
 						isReadOnly="false" 

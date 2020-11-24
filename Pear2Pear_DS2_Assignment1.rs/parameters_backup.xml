@@ -31,6 +31,12 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
+				<parameter name="BANDWIDTH" displayName="Bandwidth of relays" type="int" 
+						defaultValue="1000000" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
 				<parameter name="PROBABILITY_OF_PERTURBATION" displayName="Probability of a new perturbation per tick" type="double" 
 						defaultValue="0.005" 
 						isReadOnly="false" 

@@ -28,7 +28,7 @@ public class Options {
 		ENVIRONMENT_DIMENSION = params.getInteger("ENVIRONMENT_DIMENSION");
 		BANDWIDTH =  params.getInteger("BANDWIDTH");
 		MAX_PROPAGATION_SPEED = 1.5;
-		PERTURBATION_SIZE = 10.0;
+		PERTURBATION_SIZE = params.getDouble("PERTURBATION_SIZE");
 		
 	}
 }
