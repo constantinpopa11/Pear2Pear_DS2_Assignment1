@@ -38,16 +38,23 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		//Clearing files
 		DataCollector.clearFiles();
 		
-		// O - ring
-		// * - (extended) star
-		// R - Random
-		// | - Line
+		/*
+		 * O - ring
+		 * * - (extended) star (please note this is not a comment mistake, the "*" symbol is used as an option
+		 * R - Random
+		 * | - Line
+		 */	 
 		String topology = Options.TOPOLOGY;
 		
+		/*
+		 * This network is used for visualizing the connection between 
+		 * agents who can reach each other. When a relay forwards successfully a perturbation
+		 * to another relay, an edge is created between the two
+		 */
 		NetworkBuilder<Object> netBuilder = new NetworkBuilder<Object>("delivery network", context, true);
 		netBuilder.buildNetwork ();
 
-		
+		//Prepare the space for the relays
 		ContinuousSpaceFactory spaceFactory =
 				ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
 		ContinuousSpace<Object> space;
@@ -67,6 +74,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
 					);
 		}
 		
+		//Prepare the grid
 		GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);
 		Grid<Object> grid = gridFactory.createGrid(
 				"grid", context,
@@ -77,7 +85,6 @@ public class DemoBuilder implements ContextBuilder<Object> {
 						)
 				);
 		
-
 		//Create and add the relays to the space
 		int relayCount = Options.RELAY_COUNT;
 		for (int i = 0; i < relayCount ; i ++) {
@@ -103,6 +110,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
             System.out.println(e.getMessage());
         }
 
+        //Choose 2 nodes which are relevant for our benchmarks
         selectNodesForBroadcastLatency(context, space);
 
 		return context ;
@@ -114,7 +122,6 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		
 		//Ring topology
 		if(topology.compareTo("O") == 0) {
-			//TODO: parametrize
 			double radius = (Options.ENVIRONMENT_DIMENSION * 0.9) / 2; //ring radius
 			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01; //useful for centering everything
 			int k = 0; //counter

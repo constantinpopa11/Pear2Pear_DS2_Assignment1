@@ -40,20 +40,25 @@ import security.KeyManager;
 import Utils.DataCollector;
 import Utils.Options;
 
+/*
+ * This class encapsulates the behavior of the relay.
+ * It contains both the active methods, such as the creation of perturbations,
+ * as well as passive ones, when the relays acts as observer and senses the incoming perturbations.
+ */
 public class Relay {
 
 	//Relay__II private Map<Integer, ArrayList<Perturbation>> bag; //Out-of-order perturbations go here, waiting to be delivered later
-	private Map<Integer, ArrayList<Perturbation>> log; //append-only log
+	private Map<Integer, ArrayList<Perturbation>> log; //append-only log, one log per source
 	private ContinuousSpace<Object> space; //the space where relays are placed
 	private Grid<Object> grid; //an abstraction for the continuous space using a grid
 	public int id; //Globally unique id of the relay
 	private int clock = 0; //Incrementally growing id for the emitted perturbations
 	private Map<Integer, Integer> frontier; //reference of next perturbation per peer to be delivered
-	private HashSet<String> seenARQs;
-	private Map<Integer, List<String>> subscriptions;
-	private HashSet<Perturbation> livePerturbations;
+	private HashSet<String> seenARQs; //This is needed to filter out already seen ARQs and save computation time
+	private Map<Integer, List<String>> subscriptions; //The groups and the topics this relay has subscribed to
+	private HashSet<Perturbation> livePerturbations; //The set of perturbations this relay has forwarded AND are still alive
 
-	//Used to probability of perturbation count parameter
+	//Relays generate perturbations with a given probability value
 	private double probabilityOfPerturbation = Options.PROBABILITY_OF_PERTURBATION;
 	
 	public Relay(ContinuousSpace<Object> space, Grid<Object> grid, int id) {
@@ -67,9 +72,11 @@ public class Relay {
 		livePerturbations = new HashSet<>();
 		subscriptions = new HashMap<>();
 		
-		
-		//random way to generate subscriptions
-		//Basically the nodes whose id is a multiple of 7 will be subscribed to these topics
+		/*
+		* Random way to generate subscriptions and test the overall multicast messagging
+		* Basically the nodes whose id is a multiple of 7 (0, 7, 14, 21...)
+		* will be subscribe to the group with id=0 and will listen for the topics science and literature
+		*/
 		if(id % 7 == 0) {
 			List<String> topics = new ArrayList<>();
 			topics.add("science");
@@ -83,17 +90,22 @@ public class Relay {
 		
 	}
 
+	/*
+	 * At each tick, the relays generate a new perturbation if the
+	 * random generated number is smaller than 3 * "probabilityOfPerturbation"
+	 * Then, based on the specific value it decides the type of perturbation.
+	 * The payload of the perturbations is always the same, but it is not relevant 
+	 * for our purposes, in terms of performance of the algorithm, since we assume
+	 * that all the perturbations have the same size.
+	 */
 	@ScheduledMethod(start=1, interval=1, priority=50) 
-	public void step() {
+	public void generatePerturbation() {
 		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
-		//double coinToss2 = RandomHelper.nextDoubleFromTo(0, 1);
-		//double coinToss3 = RandomHelper.nextDoubleFromTo(0, 1);
-		//TODO add threshold parameter
 		if(coinToss <= probabilityOfPerturbation) { //propagate a value broadcast perturbation
 			broadcast(new String("ciao"));
 			
 		} else if(coinToss > probabilityOfPerturbation && coinToss <= probabilityOfPerturbation * 2) { //private message
-			//each relays sends a private message to relay with id+1
+			//each relays sends a private message to relay with identifier equal to id+1
 			int secretDestination = (id + 1) % Options.RELAY_COUNT;
 			privateSend(secretDestination, new String("ciao"));
 			
@@ -102,6 +114,8 @@ public class Relay {
 		}
 	}
 	
+	
+	//Method used to forward a perturbation 
 	private void forward(Perturbation p) {
 		System.out.println("Relay(" + id + "): forwarding perturbation"
 				+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
@@ -113,11 +127,13 @@ public class Relay {
 		
 		livePerturbations.add(p);
 		
-		//The propagation of a perturbation/wave is simulated by generating 8 perturbation clones
-		//and propagating them along the 9 directions/angles (0, 45, 90, 135...)
-		//Each perturbation clone has its own propagation speed in order to simulate the propagation delay
-		//I.e. each propagation clone travels and its own speed and it can reach the maximum range faster than others
-		//The clone is called Discrete Propagation and it's a "piece" of a Perturbation
+		/*
+		* The propagation of a perturbation/wave is simulated by generating 8 perturbation clones
+		* and propagating them along the 9 directions/angles (0, 45, 90, 135...)
+		* Each propagation clone travels at a speed determined by the available bandwidth 
+		* of the relay which forwarded it, so it can reach the maximum range faster than others propagations
+		* The clone is called Discrete Propagation and it's a "piece" of a Perturbation
+		*/
 		for(int i=0; i<DiscretePropagation.PROPAGATION_ANGLES.length; i++) {
 			DiscretePropagation propagation = new DiscretePropagation(
 					p,
@@ -134,80 +150,76 @@ public class Relay {
 	}
 	
 	
-	//Automatic retransmission requests 
-	@ScheduledMethod(start=1, interval=1, priority=20) //TODO: decide interval
+	/*
+	 * This method represents the Automatic Retransmission Mechanism described
+	 * in the paper (ARQ). In order to prevent massive flooding which such requests
+	 * relays use a smart mechanism which prevents the simulation from blocking.(details below)
+	 */
+	@ScheduledMethod(start=1, interval=1, priority=20)
 	public void automaticRetransmissionMechanism() {
+		//Get the current tick number
 		int tickCount = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
-		//Relay activate this mechanism at different times. 
-		//This is needed in order to reduce the flooding effect 
-		//when all the relays start propagating ARQs at the same time.
-		//e.g: Relay 1, 11, 21, 31....91, 101, 111, 121 etc send ARQ at tick 1, 11, 21, 31.....
+		/*
+		* Relay activate this mechanism at different times. 
+		* This is needed in order to reduce the flooding effect 
+		* when all the relays start propagating ARQs at the same time.
+		* e.g: Relay 1, 11, 21, 31....91, 101, 111, 121 etc send ARQ at tick 1, 11, 21, 31.....
+		* Hence, relays whose id end with 1, send ARQ during ticks which also end with number 1
+		*/
 		if(tickCount % 10 == id % 10) {
+			//For each known source, send a request for the next expected perturbation
 			for(Map.Entry<Integer, ArrayList<Perturbation>> perSourceLog : log.entrySet()) {
 				//Avoid sending ARQs for your own perturbations
 				if(perSourceLog.getKey() != this.id) {
 					List <Perturbation> perturbations = perSourceLog.getValue();
+					//Find out which was the last perturbation for that source
 					Perturbation latestPerturbation = perturbations.get(perturbations.size() - 1);
 					System.out.println("Relay(" + id + "): broadcasting ARQ for perturbation " 
 							+ "<src=" + latestPerturbation.getSource() + ", "
 							+ "ref=" + (latestPerturbation.getReference()+1) + ">");
+					//This is needed in order to identify ARQs, since src and ref are not enough.
+					//Multiple relays might send ARQs for the same perturbation, and in this can 
+					//we need a way to distinguish them. UUIDs is the solution to this problem
 					final String uuid = UUID.randomUUID().toString();
 					seenARQs.add(uuid);
 					forward(new Perturbation(latestPerturbation.getSource(), 
-							latestPerturbation.getReference() + 1, Type.ARQ, uuid)); //TODO:what should payload value be?
+							latestPerturbation.getReference() + 1, Type.RETRANSMISSION_REQUEST, uuid)); 
 				}
 			}
 		}
 	}
 
-	//When a perturbation propagates, relays get notified so they check 
-	//if the perturbations is in their "range" (broadcast domain)
-	//A perturbation is going to be sensed when it is in the range of the relay (within value)
-//	@Watch(watcheeClassName = "communication.DiscretePropagation",
-//			watcheeFieldNames = "propagated",
-//			query = "within 3",
-//			whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
+	/*
+	 * At each tick, relays "look" around them to see if there are any 
+	 * new perturbations in their local domain broadcast
+	 */
 	@ScheduledMethod(start=1, interval=1, priority=80)
 	public void sense() {
 		Context<Object> context = ContextUtils.getContext(this);
 		List<Perturbation> perturbations = new ArrayList<Perturbation>();
 		
-		
-		//pick up the perturbations in the same cell as the relay
-		//GridPoint pt = grid.getLocation(this);
-		
-		//old way to find nearby perturbations
-		//collect all the perturbations in this cell
-//		for(Object obj : grid.getObjectsAt(pt.getX(), pt.getY())) {
-//			if(obj instanceof DiscretePropagation) {
-//				DiscretePropagation propagation = (DiscretePropagation) obj;
-//				perturbations.add(propagation.getPerturbation());
-//			}
-//		}
-		
-		//thread safe method to inspect the nearby propagations
+		//Build a query which returns all the perturbations in this relay's range
 		ContinuousWithin<Object> nearbyQuery = new ContinuousWithin(context, this, 5.0);
+		//thread safe method to inspect the nearby propagations
 		CopyOnWriteArrayList<Object> nearbyObjects = new CopyOnWriteArrayList<>();
 		nearbyQuery.query().forEach(nearbyObjects::add);
 
+		//Iterate through the found perturbations
 		for(Object obj : nearbyObjects) {
 			if(obj instanceof DiscretePropagation && ((DiscretePropagation) obj).propagated) {
 				DiscretePropagation propagation = (DiscretePropagation) obj;
 				Perturbation p = propagation.getPerturbation();
 				Relay forwarder = propagation.getForwarder();
 				
-//				System.out.println("Distance between " + id + " and " + forwarder.getId() + " is " 
-//						+ space.getDistance(space.getLocation(this), space.getLocation(forwarder)));
-
-				
-				
-				if(p.getType() == Type.ARQ) {
+				if(p.getType() == Type.RETRANSMISSION_REQUEST) {
 					int src = p.getSource();
 					int ref = p.getReference();
 					if(!seenARQs.contains((String)p.getPayload())) {
 						System.out.println("Relay(" + id + "): sensed retransimission request for P="
 								+ "<src=" + src + ", ref=" + ref +">");
+						//add the ARQ to the set so it won't be processed twice
 						seenARQs.add((String)p.getPayload());
+						//If the requested perturbation is in the log, forward it
 						if(log.get(src) != null) {
 							for(Perturbation Q : log.get(src)) 
 								if(Q.getReference() == ref)
@@ -215,9 +227,10 @@ public class Relay {
 						}
 					}
 
+				//Check if the perturbation is the next expected perturbation
 				} else if((frontier.get(p.getSource()) == null
 						|| p.getReference() >= frontier.get(p.getSource())) 
-						&& p.getSource() != id && p.getType() != Type.ARQ) { 
+						&& p.getSource() != id && p.getType() != Type.RETRANSMISSION_REQUEST) { 
 						//Relay__II&& !isInBag(p)) {//don't sense self-generated perturbations
 					
 					//Relay__II addToBag(p);
@@ -226,14 +239,17 @@ public class Relay {
 							+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() 
 							+ "> fowarded by " + forwarder.getId());
 					
+					//calculate the next expected perturbation reference
 					Integer nextRef = frontier.get(p.getSource());
+					//in case it is null, it means this is the first perturbation for this source
 					if(nextRef == null) 
-						nextRef = p.getReference(); //TODO:this might not be permanent
+						nextRef = p.getReference(); 
 					if(nextRef == p.getReference()) {
 						forward(p);
 						deliver(p);
-						frontier.put(p.getSource(), nextRef + 1);
+						frontier.put(p.getSource(), nextRef + 1);//update frontier
 
+						//add an edge between the relay who forwarded the perturbation and the receiver
 						Network<Object> net = (Network<Object>) context.getProjection("delivery network");
 						net.addEdge(this, forwarder);
 					}
@@ -248,13 +264,12 @@ public class Relay {
 //								    Perturbation Q = deferredPerturbations.next();
 //								    Integer nextRef = frontier.get(Q.getSource());
 //									if(nextRef == null) 
-//										nextRef = Q.getReference(); //TODO:this might not be permanent
+//										nextRef = Q.getReference(); 
 //									if(nextRef == Q.getReference())
 //										changes = true;
 //										forward(Q);
 //										deliver(Q);
 //										frontier.put(Q.getSource(), nextRef + 1);
-//										//TODO: update thread safe method  removeFromBag then uncomment
 //										//removeFromBag(Q);
 //										deferredPerturbations.remove(); //temporary workaround
 //								}
@@ -291,13 +306,9 @@ public class Relay {
 //		bag.get(p.getSource()).remove(p);
 //	}
 	
-	//deliver a perturbation
+	//Deliver a perturbation
 	private void deliver(Perturbation p) {
-		//TODO: check type of perturbation, payload etc
-		//TODO: is perturbation an ARQ?
-		//TODO: forward perturbation
-		//TODO: deliver old perturbations from the buffer if possible
-		
+		//Filter out the perturbations generated by this relay
 		if(p.getSource() != this.id) {
 			System.out.println("Relay(" + id + "): delivering perturbation"
 					+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
@@ -312,6 +323,7 @@ public class Relay {
 				//nothing
 			} else if(p.getType() == Type.MULTICAST_MESSAGE) {
 				MulticastMessage m = (MulticastMessage)p.getPayload();
+				//Check if I'm subscribed to the group and/or topic
 				if(subscriptions.get(m.getGroup()) != null) {
 					List<String> topics = subscriptions.get(m.getGroup());
 					if(topics == null || topics.contains(m.getTopic())) {
@@ -321,10 +333,13 @@ public class Relay {
 					}
 				}
 			} else if(p.getType() == Type.ENCRYPTED_UNICAST) {
+				//Attempt to decrypt the message
 				SealedObject encryptedMessage = (SealedObject)p.getPayload();
 				UnicastMessage decryptedMessage = AsymmetricCryptography.decryptPayload(
 						encryptedMessage, security.KeyManager.PRIVATE_KEYS[id]);
 				
+				//If the result is null, it means the private key is not the correct one,
+				//therefore the perturbation is addressed to a different relay.
 				if(decryptedMessage != null) {
 					System.out.println("Relay(" + id + "): Relay(" + p.getSource() + ") sent me an encrypted private message");
 				} else {
@@ -349,8 +364,8 @@ public class Relay {
 		
 	}
 	
+	//Perturbation broadcast
 	private void broadcast(Object value) {
-		//TODO: smarter payload value?
 		System.out.println("Relay(" + id + "): generating perturbation"
 				+ "<" + id + ", " + this.clock + ", val>");
 		
@@ -364,15 +379,16 @@ public class Relay {
 			DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
 	}
 	
+	//Helper method for generating a private message which can then be forwarded using broadcast primitives
 	private void privateSend(int destination, Object value) {
-		//TODO: smarter payload value?
 		System.out.println("Relay(" + id + "): generating perturbation"
 				+ "<" + id + ", " + this.clock + ", P.M.>");
 		
+		//Create the payload and encrypt it
 		UnicastMessage m = new UnicastMessage(destination, value);
 		SealedObject secret = AsymmetricCryptography.encryptPayload(m, KeyManager.PUBLIC_KEYS[destination]);
 		
-		//Generate perturbation and deliver to yourself
+		//Generate perturbation 
 		Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.ENCRYPTED_UNICAST, secret);
 		forward(perturbation);
 		deliver(perturbation);
@@ -382,8 +398,8 @@ public class Relay {
 			DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
 	}
 	
+	//Helper method for generating a group message which can then be forwarded using broadcast primitives
 	private void groupSend(int groupId, String topic, Object value) {
-		//TODO: smarter payload value?
 				System.out.println("Relay(" + id + "): generating perturbation"
 						+ "<" + id + ", " + this.clock + ", G.M.>");
 				
@@ -428,6 +444,7 @@ public class Relay {
 		return "";
 	}
 	
+	//When a perturbation reaches its maximum range, it release the used bandwidth
 	public void releaseBandwidth(Perturbation p) {
 		livePerturbations.remove(p);
 	}
@@ -435,7 +452,7 @@ public class Relay {
 	
 	//Method to calculate the effective bandwidth based on how many perturbations
 	//this relay has forwarded. The greater the number of perturbations, the slower
-	//the propagation speed among the perturbations
+	//the propagation speed among the perturbations 
 	public double getFairBandwidth() {
 		double totalSize = livePerturbations.size() * Options.PERTURBATION_SIZE;
 		double fairbandwidth = Options.BANDWIDTH / totalSize;

@@ -12,11 +12,19 @@ import repast.simphony.util.ContextUtils;
 import Utils.Options;
 import agents.Relay;
 
+/*
+ * A discrete propagation can be seen as a piece of perturbation which travels 
+ * in a certain direction. In order to simulate a broadcast, we use multiple
+ * propagations which follow different trajectories. The propagation represents
+ * a way of carrying the Perturbation to the neighbors.
+ */
 public class DiscretePropagation {
-	//Each propagation travels in a certain direction,
-	//given by its angle expressed in radiant
-	//Propagation is the mean used by the Perturbation to reach other Relays
-	//In other words, many discrete propagations are used to carry a perturbation along the 8 directions
+	/*
+	* Each propagation travels in a certain direction,
+	* given by its angle expressed in radiant
+	* Propagation is the mean used by the Perturbation to reach other Relays
+	* In other words, many discrete propagations are used to carry a perturbation along the 8 directions
+	*/
 	public static final double[] PROPAGATION_ANGLES = {
         0,          //0 degrees   
 		0.7854,     //45 degrees
@@ -28,19 +36,14 @@ public class DiscretePropagation {
 		5.498,      //315
 	};
 
-	//When a perturbation has propagated for this maximum amount, it disappears from the medium
-	public double MAX_PROPAGATION_DISTANCE;
-	
-	private Perturbation perturbation;
+	public double maxDistance;//When a perturbation has propagated for this maximum amount, it disappears from the medium
+	private Perturbation perturbation; //the perturbation which is being carried
 	private ContinuousSpace<Object> space; //the space where relays are placed
 	private Grid<Object> grid; //an abstraction for the continuous space using a grid
 	private double propagationAngle; //one of the 8 possible angles a perturbation can travel
-	//private double propagationSpeed; //how many units a perturbation can advance during a time interval
-	//private NdPoint origin; //the initial position of the perturbation. I.E. the position of the sender 
 	private double traveledDistance; //the distance the perturbation has propagated along, expressed in units
-	private double size; //size of the perturbation
 	public boolean propagated; //used for notifying the relays which sense the medium for incoming perturbations
-	Relay forwarder;
+	Relay forwarder; //object reference to the relay which forwarded (NOT generated) this perturbation
 	
 	public DiscretePropagation(Perturbation perturbation, ContinuousSpace<Object> space, Grid<Object> grid,
 			double propagationAngle, Relay forwarder) {
@@ -52,11 +55,11 @@ public class DiscretePropagation {
 		this.forwarder = forwarder;
 		this.traveledDistance = 0.0;
 		this.propagated = false;
-		this.MAX_PROPAGATION_DISTANCE = Options.MAX_PROPAGATION_DISTANCE;
+		this.maxDistance = Options.MAX_PROPAGATION_DISTANCE;
 	}
 	
 	@ScheduledMethod(start=1, interval=1, priority=99) 
-	public void step() {
+	public void propagate() {
 		//Get the grid location of this perturbation
 		//GridPoint pt = grid.getLocation (this);
 		//Get the space location of this perturbation
@@ -71,12 +74,12 @@ public class DiscretePropagation {
 			&& spacePt.getX() - propagationSpeed > 0.0
 			&& spacePt.getY() + propagationSpeed < Options.ENVIRONMENT_DIMENSION
 			&& spacePt.getY() - propagationSpeed > 0.0
-			&& traveledDistance < MAX_PROPAGATION_DISTANCE) {
+			&& traveledDistance < maxDistance) {
 		
-			//If the target destination is more than the maximum propagation range,
+			//If the target destination is greater than the maximum propagation range,
 			//take the difference and propagate by a value smaller than the initial propagation speed
-			if(traveledDistance + propagationSpeed > MAX_PROPAGATION_DISTANCE) {
-				propagationSpeed = MAX_PROPAGATION_DISTANCE - traveledDistance;
+			if(traveledDistance + propagationSpeed > maxDistance) {
+				propagationSpeed = maxDistance - traveledDistance;
 			}
 			
 			//Propagate further in the space (medium)
@@ -86,6 +89,7 @@ public class DiscretePropagation {
 			traveledDistance += propagationSpeed;
 			propagated = true;
 		} else {
+			//When the propagation has traveled for a value equal to MAX_DISTANCE, it disappears
 			Context<Object> context = ContextUtils.getContext(this);
 			context.remove(this);
 			forwarder.releaseBandwidth(perturbation);

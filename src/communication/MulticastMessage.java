@@ -1,10 +1,16 @@
 package communication;
 
+/*
+ * This class encapsulates the data needed for group communication and
+ * publish&subscribe architectures. They can use the same template because
+ * the group identifier is present in both communication models.
+ * Furthermore, the topic can be set or not. In case it is null,
+ * it means that the message should be delivered to everyone in the group.
+ */
 public class MulticastMessage {
 	private int group;
 	private String topic;
 	private Object value;
-	
 	
 	public MulticastMessage(int group, String topic, Object value) {
 		super();

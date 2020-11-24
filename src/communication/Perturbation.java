@@ -16,14 +16,16 @@ import repast.simphony.space.grid.GridPoint;
 import repast.simphony.util.ContextUtils;
 import repast.simphony.util.SimUtilities;
 
+/*
+ * This class abstracts the perturbation wave cited in the paper.
+ */
 public class Perturbation {
 	public static enum Type {
-		VALUE_BROADCAST, //simplest type of payload, simply a value
+		VALUE_BROADCAST, //simplest type of payload, just a value
 		UNICAST_MESSAGE, //object encapsulating the id of the destination and a value
 		MULTICAST_MESSAGE, //object encapsulating the group and/or the topic, plus the value
 		RETRANSMISSION_REQUEST, //request for the next expected perturbation
 		ENCRYPTED_UNICAST, //just like the previous unicast message, but encrypted
-		ARQ //Automatic Retransmission Request 
 	}
 	
 	private int source; //the id of the source relay
@@ -39,6 +41,7 @@ public class Perturbation {
 		this.payload = payload;
 	}
 	
+	//Create an identical copy of the Perturbation
 	public Perturbation clone() {
 		return new Perturbation(this.source, this.reference, this.type, this.payload);
 	}
