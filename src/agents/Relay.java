@@ -343,7 +343,7 @@ public class Relay {
 		log.get(p.getSource()).add(p);
 		
 		//If this node is in charge of collecting data about latency and the sender of the perturbation is too, collect data
-		if(this.id == Options.NODE_B_LATENCY && p.getSource() == Options.NODE_A_LATENCY) {
+		if(this.id == Options.NODE_B_BROADCAST && p.getSource() == Options.NODE_A_BROADCAST) {
 			DataCollector.saveLatency(p, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencyReceiver.csv");
 		}
 		
@@ -360,7 +360,7 @@ public class Relay {
 		deliver(perturbation);
 		
 		//Write generated message for latency measurement
-		if(this.id == Options.NODE_A_LATENCY)
+		if(this.id == Options.NODE_A_BROADCAST)
 			DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
 	}
 	
@@ -378,7 +378,7 @@ public class Relay {
 		deliver(perturbation);
 		
 		//Write generated message for latency measurement
-		if(this.id == Options.NODE_A_LATENCY)
+		if(this.id == Options.NODE_A_BROADCAST)
 			DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
 	}
 	
@@ -393,7 +393,7 @@ public class Relay {
 		deliver(perturbation);
 		
 		//Write generated message for latency measurement
-		if(this.id == Options.NODE_A_LATENCY)
+		if(this.id == Options.NODE_A_BROADCAST)
 			DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
 	
 	}
