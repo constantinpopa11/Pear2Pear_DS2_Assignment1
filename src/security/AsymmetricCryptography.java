@@ -18,7 +18,7 @@ import communication.UnicastMessage;
 public class AsymmetricCryptography {
 	
     public static SealedObject encryptPayload(UnicastMessage plainMessage, PublicKey key) {
-    	 SealedObject encryptedPayload = null;
+    	SealedObject encryptedPayload = null;
         // create cipher
     	try {
     		Cipher cipher = Cipher.getInstance("RSA");

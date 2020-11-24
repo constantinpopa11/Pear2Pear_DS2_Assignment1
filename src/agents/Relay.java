@@ -27,6 +27,7 @@ import repast.simphony.query.space.grid.GridCell;
 import repast.simphony.query.space.grid.GridCellNgh;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
+import repast.simphony.space.continuous.AbstractContinuousSpace;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.graph.Network;
@@ -82,7 +83,7 @@ public class Relay {
 		
 	}
 
-	@ScheduledMethod(start=1, interval=1, priority=100) 
+	@ScheduledMethod(start=1, interval=1, priority=50) 
 	public void step() {
 		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
 		//double coinToss2 = RandomHelper.nextDoubleFromTo(0, 1);
@@ -134,7 +135,7 @@ public class Relay {
 	
 	
 	//Automatic retransmission requests 
-	@ScheduledMethod(start=1, priority=50, interval=1) //TODO: decide interval
+	@ScheduledMethod(start=1, interval=1, priority=20) //TODO: decide interval
 	public void automaticRetransmissionMechanism() {
 		int tickCount = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 		//Relay activate this mechanism at different times. 
@@ -143,15 +144,18 @@ public class Relay {
 		//e.g: Relay 1, 11, 21, 31....91, 101, 111, 121 etc send ARQ at tick 1, 11, 21, 31.....
 		if(tickCount % 10 == id % 10) {
 			for(Map.Entry<Integer, ArrayList<Perturbation>> perSourceLog : log.entrySet()) {
-				List <Perturbation> perturbations = perSourceLog.getValue();
-				Perturbation latestPerturbation = perturbations.get(perturbations.size() - 1);
-				System.out.println("Relay(" + id + "): broadcasting ARQ for perturbation " 
-						+ "<src=" + latestPerturbation.getSource() + ", "
-						+ "ref=" + (latestPerturbation.getReference()+1) + ">");
-				final String uuid = UUID.randomUUID().toString();
-				seenARQs.add(uuid);
-				forward(new Perturbation(latestPerturbation.getSource(), 
-						latestPerturbation.getReference() + 1, Type.ARQ, uuid)); //TODO:what should payload value be?
+				//Avoid sending ARQs for your own perturbations
+				if(perSourceLog.getKey() != this.id) {
+					List <Perturbation> perturbations = perSourceLog.getValue();
+					Perturbation latestPerturbation = perturbations.get(perturbations.size() - 1);
+					System.out.println("Relay(" + id + "): broadcasting ARQ for perturbation " 
+							+ "<src=" + latestPerturbation.getSource() + ", "
+							+ "ref=" + (latestPerturbation.getReference()+1) + ">");
+					final String uuid = UUID.randomUUID().toString();
+					seenARQs.add(uuid);
+					forward(new Perturbation(latestPerturbation.getSource(), 
+							latestPerturbation.getReference() + 1, Type.ARQ, uuid)); //TODO:what should payload value be?
+				}
 			}
 		}
 	}
@@ -163,14 +167,14 @@ public class Relay {
 //			watcheeFieldNames = "propagated",
 //			query = "within 3",
 //			whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
-	@ScheduledMethod(start=1, interval=1, priority=1)
+	@ScheduledMethod(start=1, interval=1, priority=80)
 	public void sense() {
 		Context<Object> context = ContextUtils.getContext(this);
 		List<Perturbation> perturbations = new ArrayList<Perturbation>();
 		
 		
 		//pick up the perturbations in the same cell as the relay
-		GridPoint pt = grid.getLocation(this);
+		//GridPoint pt = grid.getLocation(this);
 		
 		//old way to find nearby perturbations
 		//collect all the perturbations in this cell
@@ -187,11 +191,16 @@ public class Relay {
 		nearbyQuery.query().forEach(nearbyObjects::add);
 
 		for(Object obj : nearbyObjects) {
-			if(obj instanceof DiscretePropagation) {
+			if(obj instanceof DiscretePropagation && ((DiscretePropagation) obj).propagated) {
 				DiscretePropagation propagation = (DiscretePropagation) obj;
 				Perturbation p = propagation.getPerturbation();
 				Relay forwarder = propagation.getForwarder();
+				
+//				System.out.println("Distance between " + id + " and " + forwarder.getId() + " is " 
+//						+ space.getDistance(space.getLocation(this), space.getLocation(forwarder)));
 
+				
+				
 				if(p.getType() == Type.ARQ) {
 					int src = p.getSource();
 					int ref = p.getReference();
@@ -214,7 +223,8 @@ public class Relay {
 					//Relay__II addToBag(p);
 					
 					System.out.println("Relay(" + id + "): sensed perturbation"
-							+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
+							+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() 
+							+ "> fowarded by " + forwarder.getId());
 					
 					Integer nextRef = frontier.get(p.getSource());
 					if(nextRef == null) 
@@ -287,39 +297,43 @@ public class Relay {
 		//TODO: is perturbation an ARQ?
 		//TODO: forward perturbation
 		//TODO: deliver old perturbations from the buffer if possible
-		System.out.println("Relay(" + id + "): delivering perturbation"
-				+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
 		
-		//Inspect the payload
-		if(p.getType() == Type.UNICAST_MESSAGE) {
-			UnicastMessage m = (UnicastMessage)p.getPayload();
-			if(m.getDestination() == this.id) {
-				System.out.println("Relay(" + id + "): Relay(" + p.getSource() + ") sent me a private message");
-			}
-		} else if(p.getType() == Type.VALUE_BROADCAST) {
-			//nothing
-		} else if(p.getType() == Type.MULTICAST_MESSAGE) {
-			MulticastMessage m = (MulticastMessage)p.getPayload();
-			if(subscriptions.get(m.getGroup()) != null) {
-				List<String> topics = subscriptions.get(m.getGroup());
-				if(topics == null || topics.contains(m.getTopic())) {
-					
-					System.out.println("Relay(" + id + "): received a new message "
-							+ "for the subscription in the group " + m.getGroup());
+		if(p.getSource() != this.id) {
+			System.out.println("Relay(" + id + "): delivering perturbation"
+					+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
+			
+			//Inspect the payload
+			if(p.getType() == Type.UNICAST_MESSAGE) {
+				UnicastMessage m = (UnicastMessage)p.getPayload();
+				if(m.getDestination() == this.id) {
+					System.out.println("Relay(" + id + "): Relay(" + p.getSource() + ") sent me a private message");
+				}
+			} else if(p.getType() == Type.VALUE_BROADCAST) {
+				//nothing
+			} else if(p.getType() == Type.MULTICAST_MESSAGE) {
+				MulticastMessage m = (MulticastMessage)p.getPayload();
+				if(subscriptions.get(m.getGroup()) != null) {
+					List<String> topics = subscriptions.get(m.getGroup());
+					if(topics == null || topics.contains(m.getTopic())) {
+						
+						System.out.println("Relay(" + id + "): received a new message "
+								+ "for the subscription in the group " + m.getGroup());
+					}
+				}
+			} else if(p.getType() == Type.ENCRYPTED_UNICAST) {
+				SealedObject encryptedMessage = (SealedObject)p.getPayload();
+				UnicastMessage decryptedMessage = AsymmetricCryptography.decryptPayload(
+						encryptedMessage, security.KeyManager.PRIVATE_KEYS[id]);
+				
+				if(decryptedMessage != null) {
+					System.out.println("Relay(" + id + "): Relay(" + p.getSource() + ") sent me an encrypted private message");
+				} else {
+					System.out.println("Relay(" + id + "): Encrypted message from Relay " +
+							p.getSource() + " couldn't be decrypted.");
 				}
 			}
-		} else if(p.getType() == Type.ENCRYPTED_UNICAST) {
-			SealedObject encryptedMessage = (SealedObject)p.getPayload();
-			UnicastMessage decryptedMessage = AsymmetricCryptography.decryptPayload(
-					encryptedMessage, security.KeyManager.PRIVATE_KEYS[id]);
-			
-			if(decryptedMessage != null) {
-				System.out.println("Relay(" + id + "): Relay(" + p.getSource() + ") sent me an encrypted private message");
-			} else {
-				System.out.println("Relay(" + id + "): Encrypted message from Relay " +
-						p.getSource() + " couldn't be decrypted.");
-			}
 		}
+		
 		
 		//If not present, add the new source in log
 		if(!log.containsKey(p.getSource()))
@@ -371,7 +385,7 @@ public class Relay {
 	private void groupSend(int groupId, String topic, Object value) {
 		//TODO: smarter payload value?
 				System.out.println("Relay(" + id + "): generating perturbation"
-						+ "<" + id + ", " + (this.clock+1) + ", G.M.>");
+						+ "<" + id + ", " + this.clock + ", G.M.>");
 				
 		MulticastMessage m = new MulticastMessage(groupId, topic, value);
 		Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.MULTICAST_MESSAGE, m);

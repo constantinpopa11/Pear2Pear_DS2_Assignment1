@@ -55,7 +55,7 @@ public class DiscretePropagation {
 		this.MAX_PROPAGATION_DISTANCE = Options.MAX_PROPAGATION_DISTANCE;
 	}
 	
-	@ScheduledMethod(start=1, interval=1) 
+	@ScheduledMethod(start=1, interval=1, priority=99) 
 	public void step() {
 		//Get the grid location of this perturbation
 		//GridPoint pt = grid.getLocation (this);

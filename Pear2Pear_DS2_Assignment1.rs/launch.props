@@ -1,0 +1,6 @@
+#
+#Tue Nov 24 15:05:21 CET 2020
+incoming=tcp\://127.0.0.1\:5555
+outgoing=tcp\://127.0.0.1\:5556
+scenario=..\\Pear2Pear_DS2_Assignment1.rs
+working.directory=../

@@ -114,7 +114,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		//Ring topology
 		if(topology.compareTo("O") == 0) {
 			//TODO: parametrize
-			double radius = (Options.ENVIRONMENT_DIMENSION * 0.85) / 2; //ring radius
+			double radius = (Options.ENVIRONMENT_DIMENSION * 0.9) / 2; //ring radius
 			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01; //useful for centering everything
 			int k = 0; //counter
 			
@@ -130,6 +130,16 @@ public class DemoBuilder implements ContextBuilder<Object> {
 			int k = 0;
 			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01; //useful for centering everything
 			
+			
+			int tempSum = 0, layerNum = -1; //find out the number of layers
+			for(int i=1; i<n && layerNum == -1; i++) {
+				tempSum += i;
+				if((n - 1) - (4 * tempSum) <= 0)
+					layerNum = i;
+			}
+			
+			double interval = (Options.ENVIRONMENT_DIMENSION * 0.45) / layerNum;
+			System.out.println("itnerval " + interval);
 			for (Object obj : context) {
 				//125 is the maximum amount of relays that can be used during simulation
 
@@ -141,7 +151,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
 					space.moveTo(obj, centerX, centerY);
 					layer++;
 				} else { //all the other relays follow this rule
-					double radius = 3 * layer; //TODO: 3 should be equal to whatever relay range is
+					double radius = interval * layer;
 					
 					double x = radius * Math.cos((k * 2 * Math.PI) / layerSize) + offset;
 					double y = radius * Math.sin((k * 2 * Math.PI) / layerSize) + offset;
