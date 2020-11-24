@@ -103,6 +103,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
             System.out.println(e.getMessage());
         }
 
+        selectNodesForBroadcastLatency(context, space);
 
 		return context ;
 	}
@@ -179,6 +180,33 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		} else {
 			return;
 		}
+	}
+	
+	private void selectNodesForBroadcastLatency(Context<Object> context, ContinuousSpace<Object> space) {
+		int nodeA = 0;
+		int nodeB = 0;
+		double maxDistance = 0;
+		double thisDistance;
+		
+		for (Object obj : context) {
+			for (Object obj2 : context) {
+				NdPoint pt = space.getLocation(obj);
+				NdPoint pt2 = space.getLocation(obj2);
+				
+				thisDistance = space.getDistance(pt, pt2);
+				if(thisDistance > maxDistance) {
+					nodeA = ((Relay)obj).id;
+					nodeB = ((Relay)obj2).id;
+					maxDistance = thisDistance;
+				}
+				
+			}
+		}
+		
+		Options.NODE_A_BROADCAST = nodeA;
+		Options.NODE_B_BROADCAST = nodeB;
+		System.out.println(nodeA + " " + nodeB);
+		
 	}
 
 }

@@ -46,7 +46,7 @@ public class Relay {
 	private Map<Integer, ArrayList<Perturbation>> log; //append-only log
 	private ContinuousSpace<Object> space; //the space where relays are placed
 	private Grid<Object> grid; //an abstraction for the continuous space using a grid
-	private int id; //Globally unique id of the relay
+	public int id; //Globally unique id of the relay
 	private int clock = 0; //Incrementally growing id for the emitted perturbations
 	private Map<Integer, Integer> frontier; //reference of next perturbation per peer to be delivered
 	private HashSet<String> seenARQs;
@@ -423,7 +423,7 @@ public class Relay {
 		temp.remove(this.id);
 		
 		if(temp.isEmpty())
-			DataCollector.saveIsolation(this.id, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "IsolatedRelays.csv");
+			DataCollector.saveIsolation(RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "IsolatedRelays.csv");
 		
 		return "";
 	}

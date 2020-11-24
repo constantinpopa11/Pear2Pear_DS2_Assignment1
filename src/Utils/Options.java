@@ -17,6 +17,9 @@ public class Options {
 	public static double PERTURBATION_SIZE;
 	public static double MAX_PROPAGATION_SPEED;
 	
+	public static int NODE_A_BROADCAST;
+	public static int NODE_B_BROADCAST;
+	
 	public static void load() {
 		Parameters params = RunEnvironment.getInstance().getParameters();
 		
