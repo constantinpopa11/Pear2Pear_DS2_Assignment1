@@ -15,9 +15,11 @@ import communication.DiscretePropagation;
 import communication.MulticastMessage;
 import communication.Perturbation;
 import communication.UnicastMessage;
+import pear2Pear_DS2_Assignment1.TopologyManager;
 import communication.Perturbation.Type;
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.engine.schedule.PriorityType;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.engine.watcher.Watch;
 import repast.simphony.engine.watcher.WatcherTriggerSchedule;
@@ -31,6 +33,7 @@ import repast.simphony.space.continuous.AbstractContinuousSpace;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.graph.Network;
+import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridPoint;
 import repast.simphony.util.ContextUtils;
@@ -49,28 +52,27 @@ public class Relay {
 
 	//Relay__II private Map<Integer, ArrayList<Perturbation>> bag; //Out-of-order perturbations go here, waiting to be delivered later
 	private Map<Integer, ArrayList<Perturbation>> log; //append-only log, one log per source
-	private ContinuousSpace<Object> space; //the space where relays are placed
-	private Grid<Object> grid; //an abstraction for the continuous space using a grid
+	TopologyManager topologyManager; //object containing useful methods for adding and removing relays
 	public int id; //Globally unique id of the relay
 	private int clock = 0; //Incrementally growing id for the emitted perturbations
 	private Map<Integer, Integer> frontier; //reference of next perturbation per peer to be delivered
 	private HashSet<String> seenARQs; //This is needed to filter out already seen ARQs and save computation time
 	private Map<Integer, List<String>> subscriptions; //The groups and the topics this relay has subscribed to
 	private HashSet<Perturbation> livePerturbations; //The set of perturbations this relay has forwarded AND are still alive
-
+	private boolean crashed;
+	
 	//Relays generate perturbations with a given probability value
 	private double probabilityOfPerturbation = Options.PROBABILITY_OF_PERTURBATION;
 	
-	public Relay(ContinuousSpace<Object> space, Grid<Object> grid, int id) {
+	public Relay(int id) {
 		this.log = new HashMap<>();
 		//Relay__II this.bag = new HashMap<>();
 		this.frontier = new HashMap<>();
 		this.seenARQs = new HashSet<>();
-		this.space = space;
-		this.grid = grid;
 		this.id = id;
 		livePerturbations = new HashSet<>();
 		subscriptions = new HashMap<>();
+		crashed = false;
 		
 		/*
 		* Random way to generate subscriptions and test the overall multicast messagging
@@ -101,19 +103,26 @@ public class Relay {
 	@ScheduledMethod(start=1, interval=1, priority=50) 
 	public void generatePerturbation() {
 		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
-		//Generate a broadcast with one third of the probability
-		if(coinToss <= (probabilityOfPerturbation / 3)) { //propagate a value broadcast perturbation
+		//Generate a broadcast with one fourth of the probability
+		if(coinToss <= (probabilityOfPerturbation / 4)) { //propagate a value broadcast perturbation
 			broadcast(new String("ciao"));
 			
-		//Generate a private message if the value is between 1/3 and 2/3 of p
-		} else if((coinToss > (probabilityOfPerturbation / 3)) 
-				&& (coinToss <= ((probabilityOfPerturbation / 3) * 2))) { //private message
+		//Generate a (unencrypted) unicast message if the value is between 1/4 and 2/4 of p
+		} else if((coinToss > (probabilityOfPerturbation / 4)) 
+				&& (coinToss <= ((probabilityOfPerturbation / 4) * 2))) { //private message
 			//each relays sends a private message to relay with identifier equal to id+1
-			int secretDestination = (id + 1) % Options.RELAY_COUNT;
+			int destination = (id + 1) % TopologyManager.getUniqueRelaysNum();
+			send(destination, new String("ciao"));
+			
+		//Finally generate a group message if the probability is between 2/4 of p and 3/4 of p
+		} else if((coinToss > ((probabilityOfPerturbation / 4) * 2)) 
+				&& (coinToss <= ((probabilityOfPerturbation / 4) * 3))) { //private message
+			//each relays sends a private message to relay with identifier equal to id+1
+			int secretDestination = (id + 1) % Options.MAX_RELAY_COUNT;
 			privateSend(secretDestination, new String("ciao"));
 			
-		//Finally generate a group message if the probability is between 2/3 of and p
-		} else if((coinToss > ((probabilityOfPerturbation / 3) * 2)) 
+		//Finally generate a group message if the probability is between 3/4 of p and p
+		} else if((coinToss > ((probabilityOfPerturbation / 4) * 3)) 
 				&& (coinToss <= probabilityOfPerturbation)) {
 			groupSend(0, "science", "1+1=2");
 		}
@@ -126,8 +135,7 @@ public class Relay {
 				+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
 		
 		// get the grid location of this Relay
-		NdPoint spacePt = space.getLocation(this);
-		GridPoint pt = grid.getLocation(this);
+		NdPoint spacePt = TopologyManager.getSpace().getLocation(this);
 		Context<Object> context = ContextUtils.getContext(this);
 		
 		livePerturbations.add(p);
@@ -141,16 +149,12 @@ public class Relay {
 		*/
 		for(int i=0; i<DiscretePropagation.PROPAGATION_ANGLES.length; i++) {
 			DiscretePropagation propagation = new DiscretePropagation(
-					p,
-					space, grid,
-					DiscretePropagation.PROPAGATION_ANGLES[i], 
-					this);
+					p, DiscretePropagation.PROPAGATION_ANGLES[i], this);
 			context.add(propagation);
 			//Finally place the perturbation in the space
 			//Initially the perturbation has the same position as the source, 
 			//then it moves (propagates) at each interval step
-			space.moveTo(propagation, spacePt.getX(), spacePt.getY());
-			grid.moveTo(propagation, pt.getX(), pt.getY());
+			TopologyManager.getSpace().moveTo(propagation, spacePt.getX(), spacePt.getY());
 		}
 	}
 	
@@ -255,8 +259,9 @@ public class Relay {
 						frontier.put(p.getSource(), nextRef + 1);//update frontier
 
 						//add an edge between the relay who forwarded the perturbation and the receiver
-						Network<Object> net = (Network<Object>) context.getProjection("delivery network");
-						net.addEdge(this, forwarder);
+						Network<Object> net = (Network<Object>) context.getProjection("delivery network"); //TODO: fix churn
+						if(!forwarder.isCrashed())
+							net.addEdge(this, forwarder);
 					}
 						
 					//Relay__II(the entire loop)
@@ -282,6 +287,24 @@ public class Relay {
 				}
 				
 			}
+		}
+	}
+	
+	/*
+	 * At each tick, the relay might crash with a given probability.
+	 * The priority of this method is random, therefore it might occur
+	 * at different times with respect to the other scheduled methods.
+	 */
+	@ScheduledMethod(start=1, interval=1) //random priority by default
+	public void crash() {
+		double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
+		if(coinToss <= Options.CRASH_PROBABILITY 
+				&& id != Options.NODE_A_BROADCAST //these nodes are needed for the benchmark
+				&& id != Options.NODE_B_BROADCAST) { //so make them immune to crashes
+			
+			System.out.println("Relay(" + id + ") crashed, removing it from the context...");
+			crashed = true;
+			TopologyManager.removeRelay(this);
 		}
 	}
 		
@@ -341,7 +364,7 @@ public class Relay {
 				//Attempt to decrypt the message
 				SealedObject encryptedMessage = (SealedObject)p.getPayload();
 				UnicastMessage decryptedMessage = AsymmetricCryptography.decryptPayload(
-						encryptedMessage, security.KeyManager.PRIVATE_KEYS[id]);
+						encryptedMessage, KeyManager.PRIVATE_KEYS.get(this.id));
 				
 				//If the result is null, it means the private key is not the correct one,
 				//therefore the perturbation is addressed to a different relay.
@@ -384,6 +407,24 @@ public class Relay {
 			DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
 	}
 	
+	//Helper method for generating a (unencrypted) private message which can then be forwarded using broadcast primitives
+	private void send(int destination, Object value) {
+		System.out.println("Relay(" + id + "): generating perturbation"
+				+ "<" + id + ", " + this.clock + ", U.M.>");
+		
+		//Create the payload and encrypt it
+		UnicastMessage m = new UnicastMessage(destination, value);
+		
+		//Generate perturbation 
+		Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.UNICAST_MESSAGE, m);
+		forward(perturbation);
+		deliver(perturbation);
+		
+		//Write generated message for latency measurement
+		if(this.id == Options.NODE_A_BROADCAST)
+			DataCollector.saveLatency(perturbation, RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "LatencySender.csv");
+	}
+	
 	//Helper method for generating a private message which can then be forwarded using broadcast primitives
 	private void privateSend(int destination, Object value) {
 		System.out.println("Relay(" + id + "): generating perturbation"
@@ -391,7 +432,7 @@ public class Relay {
 		
 		//Create the payload and encrypt it
 		UnicastMessage m = new UnicastMessage(destination, value);
-		SealedObject secret = AsymmetricCryptography.encryptPayload(m, KeyManager.PUBLIC_KEYS[destination]);
+		SealedObject secret = AsymmetricCryptography.encryptPayload(m, KeyManager.PUBLIC_KEYS.get(destination));
 		
 		//Generate perturbation 
 		Perturbation perturbation = new Perturbation(this.id, this.clock++, Type.ENCRYPTED_UNICAST, secret);
@@ -472,6 +513,10 @@ public class Relay {
 	
 	public int getId() {
 		return id;
+	}
+	
+	public boolean isCrashed() {
+		return crashed;
 	}
 }
 

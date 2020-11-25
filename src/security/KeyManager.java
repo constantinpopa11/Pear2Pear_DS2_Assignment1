@@ -7,33 +7,35 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.HashMap;
 /*
  * This class stores both the private and public keys of all the relays.
  * Its purpose is also to generate these keys when the simulation is started
  */
 public class KeyManager {
 
-    private KeyPairGenerator keyGen;
-    private int keyNumber; //equal to the number of agents
-    public static PrivateKey[] PRIVATE_KEYS; 
-    public static PublicKey[] PUBLIC_KEYS;
+    private static KeyPairGenerator keyGen;
+    public static HashMap<Integer, PrivateKey> PRIVATE_KEYS; 
+    public static HashMap<Integer, PublicKey> PUBLIC_KEYS;
 
-    public KeyManager(int keylength, int keyNumber) throws NoSuchAlgorithmException, NoSuchProviderException {
-        this.keyGen = KeyPairGenerator.getInstance("RSA");
-        this.keyGen.initialize(keylength);
-        this.keyNumber = keyNumber;
-        PRIVATE_KEYS = new PrivateKey[keyNumber];
-        PUBLIC_KEYS = new PublicKey[keyNumber];
+    public static void initialize(int keylength, int keyNumber) throws NoSuchAlgorithmException, NoSuchProviderException {
+		keyGen = KeyPairGenerator.getInstance("RSA");
+	    keyGen.initialize(keylength);
+	    PRIVATE_KEYS = new HashMap<>();
+	    PUBLIC_KEYS = new HashMap<>();
+         
+	    //Generate the keys for the initial nodes
+        for(int i=0; i<keyNumber; i++) {
+        	generateKeys(i);
+    	}
     }
-
+    
     /*
      * Generate a number of key pairs equal to the number of agents
      */
-    public void createKeys() {
-    	for(int i=0; i<keyNumber; i++) {
-    		KeyPair pair = keyGen.generateKeyPair();
-            this.PRIVATE_KEYS[i] = pair.getPrivate();
-            this.PUBLIC_KEYS[i] = pair.getPublic();
-    	}
+    public static void generateKeys(int relayId) {
+    	KeyPair pair = keyGen.generateKeyPair();
+        PRIVATE_KEYS.put(relayId, pair.getPrivate());
+        PUBLIC_KEYS.put(relayId, pair.getPublic());
     }
 }

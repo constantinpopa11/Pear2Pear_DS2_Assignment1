@@ -9,9 +9,10 @@ import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.util.ContextUtils;
-
 import Utils.Options;
 import agents.Relay;
+import communication.Perturbation.Type;
+import pear2Pear_DS2_Assignment1.TopologyManager;
 
 /*
  * A discrete propagation can be seen as a piece of perturbation which travels 
@@ -39,19 +40,14 @@ public class DiscretePropagation {
 
 	public double maxDistance;//When a perturbation has propagated for this maximum amount, it disappears from the medium
 	private Perturbation perturbation; //the perturbation which is being carried
-	private ContinuousSpace<Object> space; //the space where relays are placed
-	private Grid<Object> grid; //an abstraction for the continuous space using a grid
 	private double propagationAngle; //one of the 8 possible angles a perturbation can travel
 	private double traveledDistance; //the distance the perturbation has propagated along, expressed in units
 	public boolean propagated; //used for notifying the relays which sense the medium for incoming perturbations
 	Relay forwarder; //object reference to the relay which forwarded (NOT generated) this perturbation
 	
-	public DiscretePropagation(Perturbation perturbation, ContinuousSpace<Object> space, Grid<Object> grid,
-			double propagationAngle, Relay forwarder) {
+	public DiscretePropagation(Perturbation perturbation, double propagationAngle, Relay forwarder) {
 		super();
 		this.perturbation = perturbation;
-		this.space = space;
-		this.grid = grid;
 		this.propagationAngle = propagationAngle;
 		this.forwarder = forwarder;
 		this.traveledDistance = 0.0;
@@ -64,7 +60,7 @@ public class DiscretePropagation {
 		//Get the grid location of this perturbation
 		//GridPoint pt = grid.getLocation (this);
 		//Get the space location of this perturbation
-		NdPoint spacePt = space.getLocation(this);
+		NdPoint spacePt = TopologyManager.getSpace().getLocation(this);
 		
 		//Simulate perturbation delay
 		double delayMultiplier = 1.0;
@@ -91,9 +87,8 @@ public class DiscretePropagation {
 			}
 			
 			//Propagate further in the space (medium)
-			space.moveByVector(this, propagationSpeed, propagationAngle, 0);
-			spacePt = space.getLocation(this);
-			grid.moveTo(this,(int)spacePt.getX(),(int)spacePt.getY());
+			TopologyManager.getSpace().moveByVector(this, propagationSpeed, propagationAngle, 0);
+			spacePt = TopologyManager.getSpace().getLocation(this);
 			traveledDistance += propagationSpeed;
 			propagated = true;
 		} else {
@@ -115,5 +110,5 @@ public class DiscretePropagation {
 
 	public void setPerturbation(Perturbation perturbation) {
 		this.perturbation = perturbation;
-	}	
+	}
 }

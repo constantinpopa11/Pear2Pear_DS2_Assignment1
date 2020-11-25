@@ -1,135 +1,5 @@
-ERROR [AWT-EventQueue-0] 2020-11-22 19:58:46,611 repast.simphony.ui.RSApplication - Error while initializing simulation
-repast.simphony.parameter.IllegalParameterException: Parameter 'ENVIROMENT_DIMENSION' not found in the schema.
-	at repast.simphony.parameter.DefaultParameters.getValue(DefaultParameters.java:213)
-	at repast.simphony.parameter.DefaultParameters.getInteger(DefaultParameters.java:242)
-	at Utils.Options.load(Options.java:28)
-	at pear2Pear_DS2_Assignment1.DemoBuilder.build(DemoBuilder.java:35)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:292)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:295)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:295)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:288)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:157)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(Unknown Source)
-	at javax.swing.AbstractButton$Handler.actionPerformed(Unknown Source)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(Unknown Source)
-	at javax.swing.DefaultButtonModel.setPressed(Unknown Source)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(Unknown Source)
-	at java.awt.AWTEventMulticaster.mouseReleased(Unknown Source)
-	at java.awt.Component.processMouseEvent(Unknown Source)
-	at javax.swing.JComponent.processMouseEvent(Unknown Source)
-	at java.awt.Component.processEvent(Unknown Source)
-	at java.awt.Container.processEvent(Unknown Source)
-	at java.awt.Component.dispatchEventImpl(Unknown Source)
-	at java.awt.Container.dispatchEventImpl(Unknown Source)
-	at java.awt.Component.dispatchEvent(Unknown Source)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Unknown Source)
-	at java.awt.LightweightDispatcher.processMouseEvent(Unknown Source)
-	at java.awt.LightweightDispatcher.dispatchEvent(Unknown Source)
-	at java.awt.Container.dispatchEventImpl(Unknown Source)
-	at java.awt.Window.dispatchEventImpl(Unknown Source)
-	at java.awt.Component.dispatchEvent(Unknown Source)
-	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
-	at java.awt.EventQueue.access$500(Unknown Source)
-	at java.awt.EventQueue$3.run(Unknown Source)
-	at java.awt.EventQueue$3.run(Unknown Source)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
-	at java.awt.EventQueue$4.run(Unknown Source)
-	at java.awt.EventQueue$4.run(Unknown Source)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
-	at java.awt.EventQueue.dispatchEvent(Unknown Source)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
-	at java.awt.EventDispatchThread.run(Unknown Source)
-ERROR [AWT-EventQueue-0] 2020-11-22 19:59:42,071 repast.simphony.ui.RSApplication - Error while initializing simulation
-repast.simphony.parameter.IllegalParameterException: Parameter 'ENVIROMENT_DIMENSION' not found in the schema.
-	at repast.simphony.parameter.DefaultParameters.getValue(DefaultParameters.java:213)
-	at repast.simphony.parameter.DefaultParameters.getInteger(DefaultParameters.java:242)
-	at Utils.Options.load(Options.java:28)
-	at pear2Pear_DS2_Assignment1.DemoBuilder.build(DemoBuilder.java:35)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:292)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:295)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:295)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:288)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:157)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(Unknown Source)
-	at javax.swing.AbstractButton$Handler.actionPerformed(Unknown Source)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(Unknown Source)
-	at javax.swing.DefaultButtonModel.setPressed(Unknown Source)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(Unknown Source)
-	at java.awt.AWTEventMulticaster.mouseReleased(Unknown Source)
-	at java.awt.Component.processMouseEvent(Unknown Source)
-	at javax.swing.JComponent.processMouseEvent(Unknown Source)
-	at java.awt.Component.processEvent(Unknown Source)
-	at java.awt.Container.processEvent(Unknown Source)
-	at java.awt.Component.dispatchEventImpl(Unknown Source)
-	at java.awt.Container.dispatchEventImpl(Unknown Source)
-	at java.awt.Component.dispatchEvent(Unknown Source)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Unknown Source)
-	at java.awt.LightweightDispatcher.processMouseEvent(Unknown Source)
-	at java.awt.LightweightDispatcher.dispatchEvent(Unknown Source)
-	at java.awt.Container.dispatchEventImpl(Unknown Source)
-	at java.awt.Window.dispatchEventImpl(Unknown Source)
-	at java.awt.Component.dispatchEvent(Unknown Source)
-	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
-	at java.awt.EventQueue.access$500(Unknown Source)
-	at java.awt.EventQueue$3.run(Unknown Source)
-	at java.awt.EventQueue$3.run(Unknown Source)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
-	at java.awt.EventQueue$4.run(Unknown Source)
-	at java.awt.EventQueue$4.run(Unknown Source)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
-	at java.awt.EventQueue.dispatchEvent(Unknown Source)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
-	at java.awt.EventDispatchThread.run(Unknown Source)
-FATAL [Thread-2] 2020-11-23 19:58:39,111 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
-	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.base/java.lang.Thread.run(Thread.java:834)
-Caused by: java.lang.reflect.InvocationTargetException
-	at communication.DiscretePropagation$$FastClassByCGLIB$$51222edb.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
-	... 7 more
-Caused by: java.lang.IllegalArgumentException: Displacement matrix has different number of dimensions than space
-	at repast.simphony.space.continuous.AbstractContinuousSpace.moveByVector(AbstractContinuousSpace.java:323)
-	at communication.DiscretePropagation.step(DiscretePropagation.java:83)
-	... 10 more
-FATAL [Thread-3] 2020-11-23 20:01:17,144 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1.0)
+FATAL [Thread-3] 2020-11-25 18:40:38,955 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (8.0)
 java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
 	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
@@ -144,147 +14,56 @@ Caused by: java.lang.reflect.InvocationTargetException
 	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
 	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
 	... 7 more
-Caused by: java.lang.NullPointerException
-	at agents.Relay.deliver(Relay.java:297)
-	at agents.Relay.groupSend(Relay.java:373)
-	at agents.Relay.step(Relay.java:98)
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.LinkedHashMap$LinkedHashIterator.nextNode(LinkedHashMap.java:719)
+	at java.base/java.util.LinkedHashMap$LinkedKeyIterator.next(LinkedHashMap.java:741)
+	at java.base/java.util.Collections$UnmodifiableCollection$1.next(Collections.java:1047)
+	at pear2Pear_DS2_Assignment1.TopologyManager.removeRelay(TopologyManager.java:80)
+	at agents.Relay.crash(Relay.java:304)
 	... 10 more
-INFO  [qtp1363560175-18] 2020-11-24 15:04:53,125 repast.simphony.ws.RepastWS - connected
-INFO  [qtp1363560175-20] 2020-11-24 15:21:53,656 repast.simphony.ws.RepastWS - Server Received {"type":"cmd","value":"init_params","params":[{"name":"randomSeed","value":"91075483"},{"name":"TOPOLOGY","value":"O"},{"name":"NODE_B_LATENCY","value":"0"},{"name":"MAX_PROPAGATION_DISTANCE","value":"15"},{"name":"ENVIRONMENT_DIMENSION","value":"50"},{"name":"RELAY_COUNT","value":"20"},{"name":"PROBABILITY_OF_PERTURBATION","value":"0.005"},{"name":"NODE_A_LATENCY","value":"0"}]}
-INFO  [Thread-12] 2020-11-24 15:21:53,720 repast.simphony.ws.RepastWS$MessageHandler - ./bin;./lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\org.codehaus.groovy_2.4.20.v202009301404-e2006-RELEASE\lib\../bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\org.codehaus.groovy_2.4.20.v202009301404-e2006-RELEASE\lib\../lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\libs.bsf_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\libs.bsf_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\libs.ext_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\libs.ext_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\libs.piccolo_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\libs.piccolo_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\org.codehaus.groovy_2.4.20.v202009301404-e2006-RELEASE/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\org.codehaus.groovy_2.4.20.v202009301404-e2006-RELEASE/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.batch_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.batch_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.bin_and_src_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.bin_and_src_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.chart_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.chart_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.core_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.core_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.data.ui_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.data.ui_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.dataLoader.ui_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.dataLoader.ui_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.dataLoader_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.dataLoader_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.data_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.data_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.distributed.batch.ui_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.distributed.batch.ui_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.distributed.batch_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.distributed.batch_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.eclipse_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.eclipse_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.essentials_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.essentials_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.freezedry_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.freezedry_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.gis.visualization_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.gis.visualization_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.gis_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.gis_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.groovy_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.groovy_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.gui_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.gui_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.integration_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.integration_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.jasperreports_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.jasperreports_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.jdbcfreezedryer_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.jdbcfreezedryer_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.jung_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.jung_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.pajek_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.pajek_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.plugin.util_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.plugin.util_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.relogo.builder_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.relogo.builder_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.relogo.ide_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.relogo.ide_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.relogo.runtime_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.relogo.runtime_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.runtime_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.runtime_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.R_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.R_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.scenario_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.scenario_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.server_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.server_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.spreadsheet_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.spreadsheet_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.sql_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.sql_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts.diagram_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts.diagram_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts.edit_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts.edit_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts.generator_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts.generator_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts.model_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts.model_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts.visualization_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts.visualization_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.statecharts_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.userpanel.ui_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.userpanel.ui_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.visualization_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.visualization_2.8.0/lib/*;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.weka_2.8.0/bin;C:\Program Files (x86)\RepastSimphony-2.8\eclipse\plugins\repast.simphony.server_2.8.0\bin\..\..\repast.simphony.weka_2.8.0/lib/*
-INFO  [Thread-12] 2020-11-24 15:21:57,143 repast.simphony.ws.RepastWS$MessageHandler - Received Status: {"id": "status", "value": "ready"}
-INFO  [pool-1-thread-1] 2020-11-24 15:21:57,148 repast.simphony.ws.OneRunRunner - ORR Received: {"params" : [{"name":"randomSeed","value":"91075483"},{"name":"TOPOLOGY","value":"O"},{"name":"NODE_B_LATENCY","value":"0"},{"name":"MAX_PROPAGATION_DISTANCE","value":"15"},{"name":"ENVIRONMENT_DIMENSION","value":"50"},{"name":"RELAY_COUNT","value":"20"},{"name":"PROBABILITY_OF_PERTURBATION","value":"0.005"},{"name":"NODE_A_LATENCY","value":"0"}]}
-INFO  [qtp1363560175-29] 2020-11-24 15:21:57,773 repast.simphony.ws.RepastWS - Server Received {"type":"cmd","value":"init_run"}
-INFO  [pool-1-thread-1] 2020-11-24 15:21:58,271 repast.simphony.ws.OneRunRunner - ORR Received: init
-INFO  [pool-1-thread-1] 2020-11-24 15:21:58,386 repast.simphony.ws.ChartServerControllerAction - Run Initialize
-INFO  [pool-1-thread-1] 2020-11-24 15:21:59,511 repast.simphony.ws.DisplayServerControllerAction - DisplayServerControllerAction.runInitialize()
-INFO  [pool-1-thread-1] 2020-11-24 15:21:59,521 repast.simphony.ws.DisplayServerControllerAction - Initializing display : Space Display - 2D
-INFO  [pool-1-thread-1] 2020-11-24 15:21:59,580 repast.simphony.ws.DisplayServer - DisplayServer2D.init()
-INFO  [pool-1-thread-1] 2020-11-24 15:21:59,620 repast.simphony.ws.DisplayServerControllerAction - Initializing display : Space&Network Display - 2D
-INFO  [pool-1-thread-1] 2020-11-24 15:21:59,644 repast.simphony.ws.DisplayServer - DisplayServer2D.init()
-INFO  [Thread-12] 2020-11-24 15:21:59,679 repast.simphony.ws.RepastWS$MessageHandler - Received Status: {"id": "status", "value": "initialized"}
-INFO  [qtp1363560175-13] 2020-11-24 15:22:11,229 repast.simphony.ws.RepastWS - Server Received {"type":"cmd","value":"step"}
-INFO  [pool-1-thread-1] 2020-11-24 15:22:11,692 repast.simphony.ws.OneRunRunner - ORR Received: step
-INFO  [qtp1363560175-29] 2020-11-24 15:22:13,085 repast.simphony.ws.RepastWS - Server Received {"type":"cmd","value":"step"}
-INFO  [pool-1-thread-1] 2020-11-24 15:22:13,236 repast.simphony.ws.OneRunRunner - ORR Received: step
-INFO  [qtp1363560175-13] 2020-11-24 15:22:13,680 repast.simphony.ws.RepastWS - Server Received {"type":"cmd","value":"step"}
-INFO  [pool-1-thread-1] 2020-11-24 15:22:13,799 repast.simphony.ws.OneRunRunner - ORR Received: step
-INFO  [qtp1363560175-29] 2020-11-24 15:22:16,579 repast.simphony.ws.RepastWS - Server Received {"type":"cmd","value":"step"}
-INFO  [qtp1363560175-13] 2020-11-24 15:22:16,811 repast.simphony.ws.RepastWS - Server Received {"type":"cmd","value":"step"}
-INFO  [pool-1-thread-1] 2020-11-24 15:22:16,825 repast.simphony.ws.OneRunRunner - ORR Received: step
-INFO  [pool-1-thread-1] 2020-11-24 15:22:16,831 repast.simphony.ws.OneRunRunner - ORR Received: step
-INFO  [qtp1363560175-29] 2020-11-24 15:22:19,106 repast.simphony.ws.RepastWS - Server Received {"type":"cmd","value":"step"}
-INFO  [pool-1-thread-1] 2020-11-24 15:22:19,344 repast.simphony.ws.OneRunRunner - ORR Received: step
-INFO  [qtp1363560175-13] 2020-11-24 15:22:37,734 repast.simphony.ws.RepastWS - disconnect
-INFO  [qtp1363560175-13] 2020-11-24 15:22:37,734 repast.simphony.ws.RepastWS$MessageHandler - MessageHandler.stop
-INFO  [pool-1-thread-1] 2020-11-24 15:22:37,737 repast.simphony.ws.OneRunRunner - ORR Received: stop
-INFO  [Thread-0] 2020-11-24 15:22:37,738 repast.simphony.ws.OneRunRunner - Model stopped callback triggered
-INFO  [Thread-0] 2020-11-24 15:22:37,751 repast.simphony.ws.DisplayServer - Display Server Destroy
-INFO  [Thread-0] 2020-11-24 15:22:37,764 repast.simphony.ws.DisplayServer - Display Server Destroy
-INFO  [Thread-12] 2020-11-24 15:22:37,775 repast.simphony.ws.RepastWS$MessageHandler - Received Status: {"id": "status", "value": "stopped"}
-INFO  [pool-1-thread-1] 2020-11-24 15:22:37,798 repast.simphony.ws.OneRunRunner - ORR Received: shutdown
-INFO  [pool-1-thread-1] 2020-11-24 15:22:37,799 repast.simphony.ws.OneRunRunner - Shutting down the Repast model runner
-INFO  [main] 2020-11-24 15:22:37,801 repast.simphony.ws.OneRunRunner - MSG Handler Canceled -- probably via stop
-INFO  [main] 2020-11-24 15:22:37,825 repast.simphony.ws.OneRunRunner - One Run Runner Cleaned Up
-INFO  [Thread-12] 2020-11-24 15:22:38,292 repast.simphony.ws.RepastWS$MessageHandler - MessageHandler.run.finalize
-ERROR [AWT-EventQueue-0] 2020-11-24 17:13:15,683 repast.simphony.ui.RSApplication - Projection error
-repast.simphony.space.SpatialException: Target location 66.59 is outside of grid's dimensions.
-	at repast.simphony.space.continuous.AbstractPointTranslator.boundsCheck(AbstractPointTranslator.java:49)
-	at repast.simphony.space.continuous.AbstractPointTranslator.transform(AbstractPointTranslator.java:39)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.doMove(AbstractContinuousSpace.java:144)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.moveTo(AbstractContinuousSpace.java:121)
-	at pear2Pear_DS2_Assignment1.DemoBuilder.buildTopology(DemoBuilder.java:157)
-	at pear2Pear_DS2_Assignment1.DemoBuilder.build(DemoBuilder.java:88)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:292)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:295)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:295)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:288)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:157)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at java.desktop/javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1967)
-	at java.desktop/javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2308)
-	at java.desktop/javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:405)
-	at java.desktop/javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:262)
-	at java.desktop/javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:279)
-	at java.desktop/java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:297)
-	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6635)
-	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3342)
-	at java.desktop/java.awt.Component.processEvent(Component.java:6400)
-	at java.desktop/java.awt.Container.processEvent(Container.java:2263)
-	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5011)
-	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2321)
-	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4843)
-	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4918)
-	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4547)
-	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4488)
-	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2307)
-	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2772)
-	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4843)
-	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:772)
-	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
-	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
-	at java.base/java.security.AccessController.doPrivileged(Native Method)
-	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
-	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:95)
-	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:745)
-	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:743)
-	at java.base/java.security.AccessController.doPrivileged(Native Method)
-	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
-	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:742)
-	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
-	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
-	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
-	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
-	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
-FATAL [AWT-EventQueue-0] 2020-11-24 19:00:29,734 repast.simphony.ui.RSUIPlugin - Fatal error starting Repast
-java.lang.UnsupportedClassVersionError: communication/Perturbation$Type has been compiled by a more recent version of the Java Runtime (class file version 55.0), this version of the Java Runtime only recognizes class file versions up to 52.0
-	at java.lang.ClassLoader.defineClass1(Native Method)
-	at java.lang.ClassLoader.defineClass(Unknown Source)
-	at java.security.SecureClassLoader.defineClass(Unknown Source)
-	at java.net.URLClassLoader.defineClass(Unknown Source)
-	at java.net.URLClassLoader.access$100(Unknown Source)
-	at java.net.URLClassLoader$1.run(Unknown Source)
-	at java.net.URLClassLoader$1.run(Unknown Source)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.net.URLClassLoader.findClass(Unknown Source)
-	at org.java.plugin.standard.StandardPluginClassLoader.loadClass(Unknown Source)
-	at org.java.plugin.standard.StandardPluginClassLoader.loadClass(Unknown Source)
-	at java.lang.ClassLoader.loadClass(Unknown Source)
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Unknown Source)
-	at repast.simphony.util.ClassFinder$ClassAdder.add(ClassFinder.java:36)
-	at repast.simphony.util.ClassFinder.processDirectory(ClassFinder.java:112)
-	at repast.simphony.util.ClassFinder.processDirectory(ClassFinder.java:115)
-	at repast.simphony.util.ClassFinder.findClasses(ClassFinder.java:95)
-	at repast.simphony.util.ClassFinder.findClasses(ClassFinder.java:83)
-	at repast.simphony.scenario.data.Classpath.getClasses(Classpath.java:75)
-	at repast.simphony.scenario.ScenarioLoader.load(ScenarioLoader.java:145)
-	at repast.simphony.ui.RSApplication.open(RSApplication.java:359)
-	at repast.simphony.ui.RSAppConfigurator.postWindowOpen(RSAppConfigurator.java:39)
-	at saf.core.ui.GUICreatorDelegate.runDisplay(GUICreatorDelegate.java:216)
-	at saf.core.ui.GUICreator$1.run(GUICreator.java:18)
-	at simphony.util.ThreadUtilities$Runner.run(ThreadUtilities.java:33)
-	at simphony.util.ThreadUtilities.runInEventThread(ThreadUtilities.java:47)
-	at saf.core.ui.GUICreator.runDisplay(GUICreator.java:16)
-	at repast.simphony.ui.RSUIPlugin$1.run(RSUIPlugin.java:101)
-	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
-	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
-	at java.awt.EventQueue.access$500(Unknown Source)
-	at java.awt.EventQueue$3.run(Unknown Source)
-	at java.awt.EventQueue$3.run(Unknown Source)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
-	at java.awt.EventQueue.dispatchEvent(Unknown Source)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
-	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
-	at java.awt.EventDispatchThread.run(Unknown Source)
+FATAL [Thread-3] 2020-11-25 18:45:20,631 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (5.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.LinkedHashMap$LinkedHashIterator.nextNode(LinkedHashMap.java:719)
+	at java.base/java.util.LinkedHashMap$LinkedKeyIterator.next(LinkedHashMap.java:741)
+	at java.base/java.util.Collections$UnmodifiableCollection$1.next(Collections.java:1047)
+	at pear2Pear_DS2_Assignment1.TopologyManager.removeRelay(TopologyManager.java:83)
+	at agents.Relay.crash(Relay.java:304)
+	... 10 more
+FATAL [Thread-2] 2020-11-25 18:46:54,975 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (7.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:336)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.lang.reflect.InvocationTargetException
+	at agents.Relay$$FastClassByCGLIB$$115bda91.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.util.ConcurrentModificationException
+	at java.base/java.util.LinkedHashMap$LinkedHashIterator.nextNode(LinkedHashMap.java:719)
+	at java.base/java.util.LinkedHashMap$LinkedKeyIterator.next(LinkedHashMap.java:741)
+	at java.base/java.util.Collections$UnmodifiableCollection$1.next(Collections.java:1047)
+	at pear2Pear_DS2_Assignment1.TopologyManager.removeRelay(TopologyManager.java:83)
+	at agents.Relay.crash(Relay.java:304)
+	... 10 more

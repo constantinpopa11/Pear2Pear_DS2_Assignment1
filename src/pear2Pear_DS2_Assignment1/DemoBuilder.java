@@ -2,6 +2,7 @@ package pear2Pear_DS2_Assignment1;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.List;
 
 import Utils.*;
 import agents.Relay;
@@ -27,6 +28,8 @@ import security.KeyManager;
 import Utils.Options;
 
 public class DemoBuilder implements ContextBuilder<Object> {
+	
+	public static List<NdPoint> availableSlots;
 
 	@Override
 	public Context build(Context<Object> context) {
@@ -39,155 +42,33 @@ public class DemoBuilder implements ContextBuilder<Object> {
 		DataCollector.clearFiles();
 		
 		/*
-		 * O - ring
-		 * * - (extended) star (please note this is not a comment mistake, the "*" symbol is used as an option
-		 * R - Random
-		 * | - Line
-		 */	 
-		String topology = Options.TOPOLOGY;
-		
-		/*
 		 * This network is used for visualizing the connection between 
 		 * agents who can reach each other. When a relay forwards successfully a perturbation
 		 * to another relay, an edge is created between the two
 		 */
-		NetworkBuilder<Object> netBuilder = new NetworkBuilder<Object>("delivery network", context, true);
-		netBuilder.buildNetwork ();
-
-		//Prepare the space for the relays
-		ContinuousSpaceFactory spaceFactory =
-				ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
-		ContinuousSpace<Object> space;
+		NetworkBuilder<Object> netBuilder = new NetworkBuilder<Object>("delivery network", context, false);
+		netBuilder.buildNetwork();
 		
-		//Instantiate space based on topology
-		if(topology.compareTo("R") == 0) {
-			space = spaceFactory.createContinuousSpace(
-					"space", context,
-					new RandomCartesianAdder<Object>(), //random location
-					new repast.simphony.space.continuous.StrictBorders(), Options.ENVIRONMENT_DIMENSION, Options.ENVIRONMENT_DIMENSION
-					);
-		} else {
-			space = spaceFactory.createContinuousSpace(
-					"space", context,
-					new SimpleCartesianAdder<Object>(), //location has still to be decided in this case
-					new repast.simphony.space.continuous.StrictBorders(), Options.ENVIRONMENT_DIMENSION, Options.ENVIRONMENT_DIMENSION
-					);
-		}
 		
-		//Prepare the grid
-		GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);
-		Grid<Object> grid = gridFactory.createGrid(
-				"grid", context,
-				new GridBuilderParameters <Object>(
-						new StrictBorders(),
-						new SimpleGridAdder<Object>(),
-						true, Options.ENVIRONMENT_DIMENSION, Options.ENVIRONMENT_DIMENSION
-						)
-				);
-		
-		//Create and add the relays to the space
-		int relayCount = Options.RELAY_COUNT;
-		for (int i = 0; i < relayCount ; i ++) {
-			context.add (new Relay(space , grid, i));
-		}
 		
 		//Position the nodes in a specific way to create the needed topology
-		buildTopology(context, space, topology);
-		
-		//Move to the relative grid cell
-		for (Object obj : context) {
-			NdPoint pt = space.getLocation(obj);
-			grid.moveTo(obj , (int)pt.getX(), (int)pt.getY());
-		}
+		TopologyManager.initialize(context);
+		TopologyManager.buildTopology();
 		
 		//Generate public and private keys
-        KeyManager km;
         try {
-            km = new KeyManager(1024, Options.RELAY_COUNT);
-            km.createKeys();
-
+        	KeyManager.initialize(1024, Options.MAX_RELAY_COUNT);
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             System.out.println(e.getMessage());
         }
 
         //Choose 2 nodes which are relevant for our benchmarks
-        selectNodesForBroadcastLatency(context, space);
+        selectNodesForBroadcastLatency(context, TopologyManager.getSpace());
 
 		return context ;
 	}
 	
-	private void buildTopology(Context<Object> context, ContinuousSpace<Object> space, String topology) {
-		
-		int n = Options.RELAY_COUNT;
-		
-		//Ring topology
-		if(topology.compareTo("O") == 0) {
-			double radius = (Options.ENVIRONMENT_DIMENSION * 0.9) / 2; //ring radius
-			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01; //useful for centering everything
-			int k = 0; //counter
-			
-			for (Object obj : context) {
-				//Calculate coordinates for each relay position
-				double x = radius * Math.cos((k * 2 * Math.PI) / n) + offset;
-				double y = radius * Math.sin((k * 2 * Math.PI) / n) + offset;
-				space.moveTo(obj, x, y);
-				k++;
-			}
-		} else if(topology.compareTo("*") == 0) { //Extended star topology
-			int layer = 0; //a star is composed by multiple layers of nodes
-			int k = 0;
-			double offset = (Options.ENVIRONMENT_DIMENSION / 2) - 0.01; //useful for centering everything
-			
-			
-			int tempSum = 0, layerNum = -1; //find out the number of layers
-			for(int i=1; i<n && layerNum == -1; i++) {
-				tempSum += i;
-				if((n - 1) - (4 * tempSum) <= 0)
-					layerNum = i;
-			}
-			
-			double interval = (Options.ENVIRONMENT_DIMENSION * 0.45) / layerNum;
-			System.out.println("itnerval " + interval);
-			for (Object obj : context) {
-				//125 is the maximum amount of relays that can be used during simulation
-
-				double layerSize = 4 * layer;
-				
-				if(layer == 0) { //This is the (first) central relay
-					double centerX = Options.ENVIRONMENT_DIMENSION / 2;
-					double centerY = Options.ENVIRONMENT_DIMENSION / 2;
-					space.moveTo(obj, centerX, centerY);
-					layer++;
-				} else { //all the other relays follow this rule
-					double radius = interval * layer;
-					
-					double x = radius * Math.cos((k * 2 * Math.PI) / layerSize) + offset;
-					double y = radius * Math.sin((k * 2 * Math.PI) / layerSize) + offset;
-					space.moveTo(obj, x, y);
-					k++;
-					
-					if(k == layerSize) {
-						layer++;
-						k = 0;
-					}
-				}
-			}
-		} else if(topology.compareTo("|") == 0) { // Line topology
-			double interval = (Options.ENVIRONMENT_DIMENSION * 0.9) / (n-1); //distance adjacent relays
-			double y = Options.ENVIRONMENT_DIMENSION / 2;
-			double start = (Options.ENVIRONMENT_DIMENSION - ((n-1) * interval)) / 2; //position of first relay
-			
-			int k = 0;
-			
-			for (Object obj : context) {
-				double x = start + (k * interval);
-				space.moveTo(obj, x, y);
-				k++;
-			}			
-		} else {
-			return;
-		}
-	}
+	
 	
 	private void selectNodesForBroadcastLatency(Context<Object> context, ContinuousSpace<Object> space) {
 		int nodeA = 0;
