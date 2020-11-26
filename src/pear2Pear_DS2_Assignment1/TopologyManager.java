@@ -21,6 +21,7 @@ import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.util.ContextUtils;
 import security.KeyManager;
 
+
 public class TopologyManager {
 	
 	private static List<NdPoint> availableLocations = null; //available locations i.e crashed nodes locations
@@ -87,6 +88,7 @@ public class TopologyManager {
 		}
 		//Finally remove the relay
 		context.remove(relay);
+		
 	}
 	
 	/*
@@ -101,7 +103,7 @@ public class TopologyManager {
 		for(int i=0; i<Options.MAX_RELAY_COUNT; i++) {
 			double coinToss = RandomHelper.nextDoubleFromTo(0, 1);
 			//Check if there are available locations
-			if(coinToss <= Options.CRASH_PROBABILITY && availableLocations.size() > 0) {
+			if(coinToss <= Options.JOIN_PROBABILITY && availableLocations.size() > 0) {
 				double x = -1, y = -1;
 				//Pick a random locations among the available ones
 				if(Options.TOPOLOGY.compareTo("R") == 0) {
@@ -211,5 +213,5 @@ public class TopologyManager {
 	public static int getUniqueRelaysNum() {
 		return nextId;
 	}
-
+	
 }

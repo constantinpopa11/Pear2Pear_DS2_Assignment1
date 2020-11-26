@@ -30,11 +30,11 @@ public class Options {
 		TOPOLOGY = params.getString("TOPOLOGY");
 		ENVIRONMENT_DIMENSION = params.getInteger("ENVIRONMENT_DIMENSION");
 		BANDWIDTH =  params.getInteger("BANDWIDTH");
-		MAX_PROPAGATION_SPEED = 1.5; //TODO: parametrize
+		MAX_PROPAGATION_SPEED = params.getDouble("MAX_PROPAGATION_SPEED");
 		PERTURBATION_SIZE = params.getDouble("PERTURBATION_SIZE");
-		DELAY_PROBABILITY = 0.0;//TODO: parametrize
-		CRASH_PROBABILITY = 0.05;//TODO: parametrize
-		JOIN_PROBABILITY = 0.05;//TODO: parametrize
+		DELAY_PROBABILITY = params.getDouble("DELAY_PROBABILITY");
+		CRASH_PROBABILITY = params.getDouble("CRASH_PROBABILITY");
+		JOIN_PROBABILITY = params.getDouble("JOIN_PROBABILITY");
 		
 	}
 }
