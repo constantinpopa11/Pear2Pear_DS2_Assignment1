@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.crypto.SealedObject;
@@ -58,7 +60,7 @@ public class Relay {
 	private Map<Integer, Integer> frontier; //reference of next perturbation per peer to be delivered
 	private HashSet<String> seenARQs; //This is needed to filter out already seen ARQs and save computation time
 	private Map<Integer, List<String>> subscriptions; //The groups and the topics this relay has subscribed to
-	private HashSet<Perturbation> livePerturbations; //The set of perturbations this relay has forwarded AND are still alive
+	private Hashtable<Perturbation, Integer> livePerturbations; //The set of perturbations this relay has forwarded AND are still alive
 	private boolean crashed;
 	
 	//Relays generate perturbations with a given probability value
@@ -70,7 +72,7 @@ public class Relay {
 		this.frontier = new HashMap<>();
 		this.seenARQs = new HashSet<>();
 		this.id = id;
-		livePerturbations = new HashSet<>();
+		livePerturbations = new Hashtable<>();
 		subscriptions = new HashMap<>();
 		crashed = false;
 		
@@ -138,7 +140,10 @@ public class Relay {
 		NdPoint spacePt = TopologyManager.getSpace().getLocation(this);
 		Context<Object> context = ContextUtils.getContext(this);
 		
-		livePerturbations.add(p);
+		if(livePerturbations.get(p) != null)
+			livePerturbations.put(p, livePerturbations.get(p) + DiscretePropagation.PROPAGATION_ANGLES.length);
+		else
+			livePerturbations.put(p, DiscretePropagation.PROPAGATION_ANGLES.length);
 		
 		/*
 		* The propagation of a perturbation/wave is simulated by generating 8 perturbation clones
@@ -233,6 +238,8 @@ public class Relay {
 							for(Perturbation Q : log.get(src)) 
 								if(Q.getReference() == ref)
 									forward(Q);
+						} else {
+							forward(p);
 						}
 					}
 
@@ -493,7 +500,16 @@ public class Relay {
 	
 	//When a perturbation reaches its maximum range, it release the used bandwidth
 	public void releaseBandwidth(Perturbation p) {
-		livePerturbations.remove(p);
+		
+		//System.out.println(id + " atempts to release bandwidth for " + p.toString());
+		
+		if((livePerturbations.get(p) - 1) == 0) 
+			livePerturbations.remove(p);
+			//System.out.println(id + " removed " + p.toString());
+		
+		else 
+			livePerturbations.put(p, livePerturbations.get(p)-1);
+			//System.out.println(id + " updated " + p.toString() + " to " + livePerturbations.get(p));
 	}
 	
 	
@@ -503,7 +519,6 @@ public class Relay {
 	public double getFairBandwidth() {
 		double totalSize = livePerturbations.size() * Options.PERTURBATION_SIZE;
 		double fairbandwidth = Options.BANDWIDTH / totalSize;
-		
 		//Perturbations can't propagate faster than a given value, so there is an upper bound
 		if(fairbandwidth > Options.MAX_PROPAGATION_SPEED)
 			return Options.MAX_PROPAGATION_SPEED;

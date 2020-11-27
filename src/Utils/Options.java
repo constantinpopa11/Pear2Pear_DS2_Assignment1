@@ -33,8 +33,8 @@ public class Options {
 		MAX_PROPAGATION_SPEED = 1.5; //TODO: parametrize
 		PERTURBATION_SIZE = params.getDouble("PERTURBATION_SIZE");
 		DELAY_PROBABILITY = 0.0;//TODO: parametrize
-		CRASH_PROBABILITY = 0.05;//TODO: parametrize
-		JOIN_PROBABILITY = 0.05;//TODO: parametrize
+		CRASH_PROBABILITY = 0.0025;//TODO: parametrize
+		JOIN_PROBABILITY = 0.0025;//TODO: parametrize
 		
 	}
 }

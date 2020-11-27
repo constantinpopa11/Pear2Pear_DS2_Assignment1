@@ -47,8 +47,23 @@ public class Perturbation {
 	}
 	
 	@Override
-	public int hashCode() {
-		return (1000000 * source + reference);
+	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
+		
+		if(!(obj instanceof Perturbation))
+			return false;
+		
+		Perturbation p = (Perturbation)obj;
+		if(this.source == p.source && this.reference == p.reference && this.type == p.getType()) 
+			return true;
+		else
+			return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "<" + source + ", " + reference + ">";
 	}
 	
 	public int getSource() {

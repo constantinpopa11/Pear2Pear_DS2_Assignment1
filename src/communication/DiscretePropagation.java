@@ -5,6 +5,7 @@ import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
+import repast.simphony.space.SpatialException;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
@@ -74,11 +75,7 @@ public class DiscretePropagation {
 		
 		//Before propagating, check if the propagation hasn't reached the boundaries of the space
 		//and its maximum propagation range, otherwise it should disappear from the display 
-		if(spacePt.getX() + propagationSpeed < Options.ENVIRONMENT_DIMENSION 
-			&& spacePt.getX() - propagationSpeed > 0.0
-			&& spacePt.getY() + propagationSpeed < Options.ENVIRONMENT_DIMENSION
-			&& spacePt.getY() - propagationSpeed > 0.0
-			&& traveledDistance < maxDistance) {
+		if(traveledDistance < maxDistance) {
 		
 			//If the target destination is greater than the maximum propagation range,
 			//take the difference and propagate by a value smaller than the initial propagation speed
@@ -86,17 +83,28 @@ public class DiscretePropagation {
 				propagationSpeed = maxDistance - traveledDistance;
 			}
 			
-			//Propagate further in the space (medium)
-			TopologyManager.getSpace().moveByVector(this, propagationSpeed, propagationAngle, 0);
-			spacePt = TopologyManager.getSpace().getLocation(this);
-			traveledDistance += propagationSpeed;
-			propagated = true;
+			try {
+				//Propagate further in the space (medium)
+				TopologyManager.getSpace().moveByVector(this, propagationSpeed, propagationAngle, 0);
+				spacePt = TopologyManager.getSpace().getLocation(this);
+				traveledDistance += propagationSpeed;
+				propagated = true;
+			} catch(SpatialException e) {
+				//When the propagation has traveled for a value equal to MAX_DISTANCE, it disappears
+				Context<Object> context = ContextUtils.getContext(this);
+				context.remove(this);
+				//Release the used bandwidth
+				if(!forwarder.isCrashed())
+					forwarder.releaseBandwidth(perturbation);
+			}
+			
 		} else {
 			//When the propagation has traveled for a value equal to MAX_DISTANCE, it disappears
 			Context<Object> context = ContextUtils.getContext(this);
 			context.remove(this);
 			//Release the used bandwidth
-			forwarder.releaseBandwidth(perturbation);
+			if(!forwarder.isCrashed())
+				forwarder.releaseBandwidth(perturbation);
 		}
 	}
 	
