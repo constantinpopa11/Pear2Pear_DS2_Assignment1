@@ -70,7 +70,7 @@ public class DemoBuilder implements ContextBuilder<Object> {
 	
 	
 	
-	private void selectNodesForBroadcastLatency(Context<Object> context, ContinuousSpace<Object> space) {
+	public void selectNodesForBroadcastLatency(Context<Object> context, ContinuousSpace<Object> space) {
 		int nodeA = 0;
 		int nodeB = 0;
 		double maxDistance = 0;

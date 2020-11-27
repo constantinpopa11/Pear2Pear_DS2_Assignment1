@@ -13,6 +13,18 @@
 									values="O * R | "
 						
 		/>
+				<parameter name="PERTURBATION_SIZE" displayName="Size of the messages" type="double" 
+						defaultValue="10.0" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="CRASH_PROBABILITY" displayName="Probability of relays to crash" type="double" 
+						defaultValue="0.05" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
 				<parameter name="MAX_PROPAGATION_DISTANCE" displayName="Perturbation range" type="int" 
 						defaultValue="15" 
 						isReadOnly="false" 
@@ -25,6 +37,12 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
+				<parameter name="MAX_PROPAGATION_SPEED" displayName="Maximum speed of perturbation" type="double" 
+						defaultValue="1.5" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
 				<parameter name="RELAY_COUNT" displayName="Number of relays" type="int" 
 						defaultValue="20" 
 						isReadOnly="false" 
@@ -35,6 +53,12 @@
 						defaultValue="1000000" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="DELAY_PROBABILITY" displayName="Probability of random delays" type="double" 
+						defaultValue="0.0" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
 				<parameter name="PROBABILITY_OF_PERTURBATION" displayName="Probability of a new perturbation per tick" type="double" 
