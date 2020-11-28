@@ -213,7 +213,7 @@ public class Relay {
 		List<Perturbation> perturbations = new ArrayList<Perturbation>();
 		
 		//Build a query which returns all the perturbations in this relay's range
-		ContinuousWithin<Object> nearbyQuery = new ContinuousWithin(context, this, 5.0);
+		ContinuousWithin<Object> nearbyQuery = new ContinuousWithin(context, this, Options.RELAY_RANGE);
 		//thread safe method to inspect the nearby propagations
 		CopyOnWriteArrayList<Object> nearbyObjects = new CopyOnWriteArrayList<>();
 		nearbyQuery.query().forEach(nearbyObjects::add);
@@ -483,16 +483,14 @@ public class Relay {
 	
 	public String saveIsolation() {
 		
-		final Map<Integer, ArrayList<Perturbation>> temp;
-		temp = new HashMap<>();
+		int numberOfEdges = 0;
 		
-		for(Map.Entry<Integer, ArrayList<Perturbation>> logLine : log.entrySet()) {
-			temp.put(logLine.getKey(), logLine.getValue());
-		}
+		Context<Object> context = ContextUtils.getContext(this);
+		Network<Object> net = (Network<Object>) context.getProjection("delivery network");
+		numberOfEdges += net.getOutDegree(this);
+		numberOfEdges += net.getInDegree(this);
 		
-		temp.remove(this.id);
-		
-		if(temp.isEmpty())
+		if(numberOfEdges == 0)
 			DataCollector.saveIsolation(RunEnvironment.getInstance().getCurrentSchedule().getTickCount(), "IsolatedRelays.csv");
 		
 		return "";

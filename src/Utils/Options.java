@@ -17,6 +17,7 @@ public class Options {
 	public static double DELAY_PROBABILITY;
 	public static double CRASH_PROBABILITY;
 	public static double JOIN_PROBABILITY;
+	public static double RELAY_RANGE;
 	
 	public static int NODE_A_BROADCAST;
 	public static int NODE_B_BROADCAST;
@@ -34,6 +35,7 @@ public class Options {
 		PERTURBATION_SIZE = params.getDouble("PERTURBATION_SIZE");
 		DELAY_PROBABILITY = params.getDouble("DELAY_PROBABILITY");
 		CRASH_PROBABILITY = params.getDouble("CRASH_PROBABILITY");
-		JOIN_PROBABILITY = params.getDouble("JOIN_PROBABILITY");	
+		JOIN_PROBABILITY = params.getDouble("JOIN_PROBABILITY");
+		RELAY_RANGE = params.getDouble("RELAY_RANGE");
 	}
 }
