@@ -10,4 +10,4 @@ The project is an implementation of A Broadcast-Only Communication Model
 Based on Replicated Append-Only Logs, by Christian F. Tschudin.
 
 Installer
-You can download the installer (.jar) from here and follow the steps described into  the report.
+You can download the installer (.jar) from here [LINKTOBEADDED] and follow the steps described into  the report.
