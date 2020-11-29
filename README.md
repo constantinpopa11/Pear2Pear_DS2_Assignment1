@@ -1,2 +1,13 @@
 # Pear2Pear_DS2_Assignment1
-A broadcast-only communication model based on replicated append-only logs implementation in Repast Symphony
+This is Assignment 1 of the Distributed System 2, DISI, University of Trento, A.Y. 2020/2021. Here, you can find the Java source of broadcast-only simulation implemented with Repast Simphony and a report with some performance analysis.
+
+Students
+Constantin Popa [ID] , e-mail
+Andrea Traldi [213011], andrea.traldi@studenti.unitn.it
+
+References
+The project is an implementation of A Broadcast-Only Communication Model
+Based on Replicated Append-Only Logs, by Christian F. Tschudin.
+
+Installer
+You can download the installer (.jar) from here and follow the steps described into  the report.
