@@ -7,7 +7,7 @@ This is Assignment 1 of the Distributed System 2, DISI, University of Trento, A.
 
 ## References
 The project is an implementation of **A Broadcast-Only Communication Model
-Based on Replicated Append-Only Logs**, by Christian F. Tschudin.
+Based on Replicated Append-Only Logs**, by C. F. TSCHUDIN.
 
 ## Installer
 You can download the installer (.jar) from here [LINKTOBEADDED] and follow the steps described into  the report.
