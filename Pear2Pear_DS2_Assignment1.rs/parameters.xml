@@ -1,79 +1,72 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
-					<parameter name="randomSeed" displayName="Default Random Seed" type="int" 
-						defaultValue="__NULL__"
-						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
-									
-		/>
-				<parameter name="TOPOLOGY" displayName="Topology of the network" type="java.lang.String" 
+					<parameter name="TOPOLOGY" displayName="Topology of the network" type="java.lang.String" 
 						defaultValue="O" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-									values="O * R | "
-						
-		/>
-				<parameter name="PERTURBATION_SIZE" displayName="Size of the messages" type="double" 
-						defaultValue="10.0" 
-						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
-									
-		/>
+												values="O * R | "
+											/>
 				<parameter name="CRASH_PROBABILITY" displayName="Probability of relays to crash" type="double" 
 						defaultValue="0.05" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
-									
-		/>
-				<parameter name="MAX_PROPAGATION_DISTANCE" displayName="Perturbation range" type="int" 
-						defaultValue="15" 
-						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
-									
-		/>
-				<parameter name="ENVIRONMENT_DIMENSION" displayName="Dimension of the environment" type="int" 
-						defaultValue="50" 
-						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
-									
-		/>
-				<parameter name="MAX_PROPAGATION_SPEED" displayName="Maximum speed of perturbation" type="double" 
-						defaultValue="1.5" 
-						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
-									
-		/>
+											/>
 				<parameter name="RELAY_COUNT" displayName="Number of relays" type="int" 
 						defaultValue="20" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
-									
-		/>
+											/>
+				<parameter name="randomSeed" displayName="Default Random Seed" type="int" 
+						defaultValue="__NULL__"
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+											/>
+				<parameter name="PERTURBATION_SIZE" displayName="Size of the messages" type="double" 
+						defaultValue="10.0" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+											/>
+				<parameter name="MAX_PROPAGATION_DISTANCE" displayName="Perturbation range" type="int" 
+						defaultValue="15" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+											/>
+				<parameter name="ENVIRONMENT_DIMENSION" displayName="Dimension of the environment" type="int" 
+						defaultValue="50" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+											/>
+				<parameter name="MAX_PROPAGATION_SPEED" displayName="Maximum speed of perturbation" type="double" 
+						defaultValue="1.5" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+											/>
+				<parameter name="RELAY_RANGE" displayName="Relay's range of sense" type="double" 
+						defaultValue="5.0" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+											/>
 				<parameter name="BANDWIDTH" displayName="Bandwidth of relays" type="int" 
 						defaultValue="1000000" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
-									
-		/>
+											/>
 				<parameter name="DELAY_PROBABILITY" displayName="Probability of random delays" type="double" 
 						defaultValue="0.0" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
-									
-		/>
+											/>
 				<parameter name="JOIN_PROBABILITY" displayName="Probability of new relays to join" type="double" 
 						defaultValue="0.05" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
-									
-		/>
+											/>
 				<parameter name="PROBABILITY_OF_PERTURBATION" displayName="Probability of a new perturbation per tick" type="double" 
 						defaultValue="0.005" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
-									values="0.001 0.005 0.01 0.05 0.1 0.25 0.5 0.75 1.0 "
-						
-		/>
+												values="0.001 0.005 0.01 0.05 0.1 0.25 0.5 0.75 1.0 "
+											/>
 		</parameters>
 
 

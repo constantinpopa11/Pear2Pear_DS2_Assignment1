@@ -12,6 +12,10 @@
     <string>SettingsRegistryId</string>
     <string>Repast.registry</string>
     <string>LastLoadedScenario</string>
+<<<<<<< HEAD
     <string>C:\Users\invidia\eclipse-workspace\Pear2Pear_DS2_Assignment1\Pear2Pear_DS2_Assignment1.rs</string>
+=======
+    <string>C:\Users\39333\Desktop\GitHub\Pear2Pear_DS2_Assignment1\Pear2Pear_DS2_Assignment1.rs</string>
+>>>>>>> 75c7e1fc524446d652ca537557f7dcc28661f3db
   </hashtable>
 </simphony.settings.SettingsRegistry>
