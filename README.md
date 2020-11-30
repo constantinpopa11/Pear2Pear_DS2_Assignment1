@@ -1,6 +1,6 @@
 # Pear2Pear_DS2_Assignment1
 This is Assignment 1 of the Distributed System 2, DISI, University of Trento, A.Y. 2020/2021. Here, you can find the Java source of the *Broadcast-Only Communication Model
-Based on Replicated Append-Only Logs* implementation in Repast Simphony and a report with some technical details and performance analysis.
+Based on Replicated Append-Only Logs* implementation in Repast Simphony and [the report](https://drive.google.com/file/d/18h-z-wE7FUcDconDh1ONEgS7HWcg9uot/view?usp=sharing) containing the description of the work that has been done, technical details and performance analysis.
 
 ## Students
 - Constantin Popa [211986] , constantin.popa@studenti.unitn.it
