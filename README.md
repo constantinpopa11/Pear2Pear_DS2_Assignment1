@@ -13,8 +13,8 @@ Based on Replicated Append-Only Logs**, by C. F. TSCHUDIN.
 ## Installer
 You can download the installer (.jar) from [here](https://drive.google.com/file/d/1PoDNhoCv8pW5APv7cGhk5lrK_Wugfjpf/view?usp=sharing) and follow the steps described into  the report.
 
-- Make sure Java RE 1.8 is installed on your system.
--  Run  thesetup.jarusing  the  system  GUI  or  by  typingjava -jar setup jarin  theterminal.  Follow the wizard steps in order to accept the licence and choose theinstallation directory.
--  Launch  the  simulator  by  executingstart model.bat.   A  Java  application  will  bedisplayed on your screen. Warning: if you use an Apple Mac device then you haveto executestart model.command.
--  Set  the  values  of  the  parameters  from  theParameterwindow.   Once  you  havechosen the parameter values, it is possible to save them for further executions.
--  Finally,  you  can  launch  the  simulation  by  clicking  on  theInitialize Runbuttonplaced on the upper bar.  You can start the simulation by clicking onStart Runbutton or by clicking on theStepbutton.   Simulation execution can be sloweddown manually by increasing theSchedule Tick Delayin theRun Optionswindows.
+- Make sure JRE 11 is installed on your system.
+- Run the *setup.jar* using the system GUI or by typing *java -jar setup.jar* in the terminal. Follow  the  wizard  steps  in  order  to  accept  the  licence  and  choose  the installation directory.
+- Launch  the  simulator  by  executing *start_model.bat*.   A  Java  application  will  be displayed on your screen. If you are using an Apple Mac device then you have to execute *startmodel.command*.
+- Set  the  values  of  the  parameters  from  the *Parameter* window.   Once  you  have chosen the parameter values, it is possible to save them for further executions.
+- Finally,  you  can  launch  the  simulation  by  clicking  on  the *Initialize Run* button placed on the upper bar.  You can start the simulation by clicking on *Start Run* button or by clicking on the *Step* button.   Simulation execution can be slowed down by increasing the *Schedule Tick Delay* in the *Run Options* window.
