@@ -3,7 +3,7 @@ package custom_style;
 
 import java.awt.Color;
 
-import communication.DiscretePropagation;
+import agents.DiscretePropagation;
 import communication.Perturbation.Type;
 import repast.simphony.visualizationOGL2D.DefaultStyleOGL2D;
 

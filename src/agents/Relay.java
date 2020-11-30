@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.crypto.SealedObject;
-import communication.DiscretePropagation;
+
 import communication.MulticastMessage;
 import communication.Perturbation;
 import communication.UnicastMessage;
@@ -96,7 +96,7 @@ public class Relay {
 
 	/*
 	 * At each tick, the relays generate a new perturbation if the
-	 * random generated number is smaller than 3 * "probabilityOfPerturbation"
+	 * random generated number is smaller than "probabilityOfPerturbation"
 	 * Then, based on the specific value it decides the type of perturbation.
 	 * The payload of the perturbations is always the same, but it is not relevant 
 	 * for our purposes, in terms of performance of the algorithm, since we assume
@@ -136,7 +136,6 @@ public class Relay {
 		System.out.println("Relay(" + id + "): forwarding perturbation"
 				+ "<" + p.getSource() + ", " + p.getReference() + ", " + p.getPayload().toString() + ">");
 		
-		// get the grid location of this Relay
 		NdPoint spacePt = TopologyManager.getSpace().getLocation(this);
 		Context<Object> context = ContextUtils.getContext(this);
 		

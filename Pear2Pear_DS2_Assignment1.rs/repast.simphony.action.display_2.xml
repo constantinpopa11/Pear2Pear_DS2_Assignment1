@@ -1,9 +1,9 @@
-<repast.simphony.visualization.engine.CartesianDisplayDescriptor simphonyVersion="2.7.0">
+<repast.simphony.visualization.engine.CartesianDisplayDescriptor simphonyVersion="2.8.0">
   <name>Space&amp;Network Display</name>
   <type>2D</type>
   <styles>
     <entry>
-      <string>communication.DiscretePropagation</string>
+      <string>agents.DiscretePropagation</string>
       <string>custom_style.PerturbationStyle</string>
     </entry>
     <entry>
@@ -13,7 +13,7 @@
   </styles>
   <editedStyles>
     <entry>
-      <string>communication.DiscretePropagation</string>
+      <string>agents.DiscretePropagation</string>
       <null/>
     </entry>
     <entry>
@@ -41,19 +41,19 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1977558273</hashCode>
+    <hashCode>1922968592</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space</layoutProjection>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>communication.DiscretePropagation</string>
-      <int>0</int>
+      <string>agents.DiscretePropagation</string>
+      <int>1</int>
     </entry>
     <entry>
       <string>agents.Relay</string>
-      <int>1</int>
+      <int>0</int>
     </entry>
   </layerOrder>
   <projections>

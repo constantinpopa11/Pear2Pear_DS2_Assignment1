@@ -1,4 +1,4 @@
-package communication;
+package agents;
 
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
@@ -11,7 +11,7 @@ import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.util.ContextUtils;
 import Utils.Options;
-import agents.Relay;
+import communication.Perturbation;
 import communication.Perturbation.Type;
 import pear2Pear_DS2_Assignment1.TopologyManager;
 
